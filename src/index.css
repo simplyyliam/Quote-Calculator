@@ -1,0 +1,119 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+
+body {
+  font-family: 'DM Sans', sans-serif;
+}
+
+
+/* Custom checkbox styles */
+input[type="checkbox"] {
+  appearance: none;
+  height: 15px;
+  width: 15px;
+  border: 1px solid #0d0d0d;
+  border-radius: 100%;
+  padding: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  vertical-align: middle;
+  position: relative;
+}
+
+input[type="checkbox"]:checked {
+  border-color: #608ff5;
+  background: #608ff5;
+}
+
+
+/* Custom range slider styles */
+/* ===== Custom Range Slider Track Styles ===== */
+input[type="range"] {
+  appearance: none;
+  width: 100%;
+  height: 6.5px;
+  background: #E9E9EB;
+  border-radius: 34px;
+  outline: none;
+  transition: background 0.2s;
+  margin: 8px 0;
+}
+
+/* ===== Thumb Styles (All Browsers) ===== */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(20, 20, 20);
+  cursor: pointer;
+  transition: background 0.2s;
+  backdrop-filter: blur(2px);
+}
+
+/* Custom range slider thumb styles from Figma */
+input[type="range"]::-webkit-slider-thumb {
+  width: 24.34px;
+  height: 24.34px;
+  background: rgba(14, 14, 14, 0.5);
+  box-shadow: 0px 6.4898px 4.38061px -1.62245px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2.43367px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 31.9854px;
+  z-index: 1;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb,
+input[type="range"]::-webkit-slider-thumb:active {
+  background: rgba(20, 20, 20);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 24.34px;
+  height: 24.34px;
+  background: rgba(14, 14, 14, 0.5);
+  box-shadow: 0px 6.4898px 4.38061px -1.62245px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2.43367px);
+  border-radius: 31.9854px;
+  z-index: 1;
+}
+
+input[type="range"]:focus::-moz-range-thumb,
+input[type="range"]::-moz-range-thumb:active {
+  background: rgba(20, 20, 20, 0.5);
+}
+
+input[type="range"]::-ms-thumb {
+  width: 24.34px;
+  height: 24.34px;
+  background: rgba(14, 14, 14, 0.5);
+  box-shadow: 0px 6.4898px 4.38061px -1.62245px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2.43367px);
+  border-radius: 31.9854px;
+  z-index: 1;
+}
+
+input[type="range"]:focus::-ms-thumb,
+input[type="range"]::-ms-thumb:active {
+  background: rgba(20, 20, 20, 0.5);
+}
+
+/* ===== Track Styles ===== */
+input[type="range"]::-ms-fill-lower,
+input[type="range"]::-ms-fill-upper {
+  background: #e5e7eb;
+  border-radius: 2px;
+}
+
+input[type="range"]:focus::-ms-fill-lower,
+input[type="range"]:focus::-ms-fill-upper {
+  background: #d1d5db;
+}
+
+/* ===== Disabled State ===== */
+input[type="range"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
