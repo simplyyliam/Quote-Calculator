@@ -3,17 +3,24 @@ import { BoxSelector } from "./components/BoxSelector";
 import { CustomButton } from "./components/CustomButton";
 import { NavBar } from "./components/nav";
 import { Selector } from "./components/selectors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCallback } from "react";
 
 function App() {
-  // Single-select for contact length
-  const [selectedContactLength, setSelectedContactLength] = useState<number | null>(null);
+  // Single-select for Contract length
+  const [selectedContractLength, setselectedContractLength] = useState<number | null>(null);
   const [selectedPlatforms, setSelectedPlatforms] = useState<number[]>([]);
   const [postValue, setPostValue] = useState<number | null>(0);
+  
+  const [contractLength, setContractLength] = useState<string | null>(null)
+  const [selectedStrategy, setSelectedStrategy] = useState<string[]>([])
+  const [selectedContent, setSelectedContent] = useState<string[]>([])
+  const [finalPrice, setFinalPrice] = useState<number>(0);
 
-  // Set contact length selection
-  const handleContactLengthClick = (idx: number) => {
-    setSelectedContactLength(idx);
+
+  // Set Contract length selection
+  const handleContractLengthClick = (idx: number) => {
+    setselectedContractLength(idx);
   };
 
   // Toggle platform selection (multi-select)
@@ -23,11 +30,148 @@ function App() {
     );
   };
 
-  function handleQuoteResults () {
-    
+  const getPlatformPrice = (platformIdx: number): number => {
+    switch (platformIdx) {
+      case 0:
+        return 150; // Facebook
+      case 1:
+        return 220; // Instagram
+      case 2:
+        return 250; // YouTube
+      case 3:
+        return 175; // LinkedIn
+      case 4:
+        return 225; // TikTok
+      case 5:
+        return 100; // Pinterest
+      default:
+        return 0;
+    }
+  };
 
-    return "$3480"
+  const getContractLength = (Contract: number): string => {
+    switch (Contract) {
+      case 0:
+        return "No discount";
+      case 1:
+        return "10% discount";
+      case 2:
+        return "20% discount";
+      default:
+        return "";
+    }
   }
+const getStrategyPrice = (item: string) => {
+  switch (item) {
+    case "Social Media Strategy":
+      return 100
+    case "Competitor Analysis":
+      return 80
+    case "Monthly Performance Reports":
+      return 70
+    default:
+      return 0
+  }
+}
+
+const getContentPrice = (item: string) => {
+  switch (item) {
+    case "Custom Graphics":
+      return 150
+    case "Copywriting":
+      return 120
+    case "Photography":
+      return 200
+    default:
+      return 0
+  }
+}
+
+  useEffect(() => {
+    const handlePlatforms = () => {
+      let total = 0
+
+      selectedPlatforms.forEach((idx) => {
+        total += getPlatformPrice(idx)
+      })
+
+      console.log(total)
+    };
+    const handleContractLength = () => {
+      if (selectedContractLength !== null) {
+        const discount = getContractLength(selectedContractLength)
+        setContractLength(discount)
+        console.log(discount)
+      }
+
+    };
+    const handleStrategyReporting = () => {
+      let total = 0;
+      selectedStrategy.forEach((item) => {
+        total += getStrategyPrice(item);
+      });
+      console.log("Strategy Total:", total);
+    };
+    
+    const handleContentCreation = () => {
+      let total = 0;
+      selectedContent.forEach((item) => {
+        total += getContentPrice(item);
+      });
+      console.log("Content Total:", total);
+    };
+
+    handlePlatforms()
+    handleContractLength()
+    handleStrategyReporting()
+    handleContentCreation()
+  }, [selectedPlatforms, selectedContractLength, selectedContent, selectedStrategy]);
+
+const calculateTotal = useCallback(() => {
+  let total = 0;
+
+  selectedPlatforms.forEach((idx) => {
+    total += getPlatformPrice(idx);
+  });
+
+  selectedStrategy.forEach((item) => {
+    total += getStrategyPrice(item);
+  });
+
+  selectedContent.forEach((item) => {
+    total += getContentPrice(item);
+  });
+
+  if (postValue) {
+    total *= postValue;
+  }
+
+  if (selectedContractLength !== null) {
+    switch (selectedContractLength) {
+      case 1: // 3 Months
+        total = total - total * 0.1; 
+        break;
+      case 2: // 6 Months
+        total = total - total * 0.2;
+        break;
+      default:
+        break;
+    }
+  }
+
+  setFinalPrice(Math.round(total));
+}, [
+  selectedPlatforms,
+  selectedStrategy,
+  selectedContent,
+  postValue,
+  selectedContractLength,
+]);
+
+useEffect(() => {
+  calculateTotal()
+}, [calculateTotal]);
+
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
@@ -40,28 +184,94 @@ function App() {
           <div className="flex flex-col gap-3">
             <h1 className="text-xl font-medium">Strategy & Reporting</h1>
             <div className="flex flex-col gap-2 ml-8">
-              <Selector>Social Media Strategy</Selector>
-              <Selector>Competitor Analysis</Selector>
-              <Selector>Monthly Performance Reports</Selector>
+              <Selector
+                label="Social Media Strategy"
+                checked={selectedStrategy.includes("Social Media Strategy")}
+                onChange={() => {
+                  const label = "Social Media Strategy";
+                  setSelectedStrategy((prev) =>
+                    prev.includes(label)
+                      ? prev.filter((item) => item !== label)
+                      : [...prev, label]
+                  );
+                }}
+              />
+              <Selector
+                label="Competitor Analysis"
+                checked={selectedStrategy.includes("Competitor Analysis")}
+                onChange={() => {
+                  const label = "Competitor Analysis";
+                  setSelectedStrategy((prev) =>
+                    prev.includes(label)
+                      ? prev.filter((item) => item !== label)
+                      : [...prev, label]
+                  );
+                }}
+              />
+              <Selector
+                label="Monthly Performance Reports"
+                checked={selectedStrategy.includes("Monthly Performance Reports")}
+                onChange={() => {
+                  const label = "Monthly Performance Reports";
+                  setSelectedStrategy((prev) =>
+                    prev.includes(label)
+                      ? prev.filter((item) => item !== label)
+                      : [...prev, label]
+                  );
+                }}
+              />
             </div>
           </div>
           {/* Content Creation */}
           <div className="flex flex-col gap-3">
             <h1 className="text-xl font-medium">Content Creation</h1>
             <div className="flex flex-col gap-2 ml-8">
-              <Selector>Custom Graphics </Selector>
-              <Selector>Copywriting</Selector>
-              <Selector>Photography</Selector>
+              <Selector
+                label="Custom Graphics"
+                checked={selectedContent.includes("Custom Graphics")}
+                onChange={() => {
+                  const label = "Custom Graphics";
+                  setSelectedContent((prev) =>
+                    prev.includes(label)
+                      ? prev.filter((item) => item !== label)
+                      : [...prev, label]
+                  );
+                }}
+              />
+              <Selector
+                label="Copywriting"
+                checked={selectedContent.includes("Copywriting")}
+                onChange={() => {
+                  const label = "Copywriting";
+                  setSelectedContent((prev) =>
+                    prev.includes(label)
+                      ? prev.filter((item) => item !== label)
+                      : [...prev, label]
+                  );
+                }}
+              />
+              <Selector
+                label="Photography"
+                checked={selectedContent.includes("Photography")}
+                onChange={() => {
+                  const label = "Photography";
+                  setSelectedContent((prev) =>
+                    prev.includes(label)
+                      ? prev.filter((item) => item !== label)
+                      : [...prev, label]
+                  );
+                }}
+              />
             </div>
           </div>
 
-          {/* Contact Lengths */}
+          {/* Contract Lengths */}
           <div className="flex flex-col gap-3">
-            <h1 className="text-xl font-medium">Contact Length</h1>
+            <h1 className="text-xl font-medium">Contract Length</h1>
             <div className="flex gap-2">
               <BoxSelector
-                isSelected={selectedContactLength === 0}
-                onClick={() => handleContactLengthClick(0)}
+                isSelected={selectedContractLength === 0}
+                onClick={() => handleContractLengthClick(0)}
               >
                 <h1 className="text-[16px] font-medium">Monthly</h1>
                 <h3 className="text-[14px] font-light opacity-50">
@@ -69,21 +279,21 @@ function App() {
                 </h3>
               </BoxSelector>
               <BoxSelector
-                isSelected={selectedContactLength === 1}
-                onClick={() => handleContactLengthClick(1)}
+                isSelected={selectedContractLength === 1}
+                onClick={() => handleContractLengthClick(1)}
               >
                 <h1 className="text-[16px] font-medium">3 Months</h1>
                 <h3 className="text-[14px] font-light opacity-50">
-                  20% discount
+                  10% discount
                 </h3>
               </BoxSelector>
               <BoxSelector
-                isSelected={selectedContactLength === 2}
-                onClick={() => handleContactLengthClick(2)}
+                isSelected={selectedContractLength === 2}
+                onClick={() => handleContractLengthClick(2)}
               >
                 <h1 className="text-[16px] font-medium">6 Months</h1>
                 <h3 className="text-[14px] font-light opacity-50">
-                  10% discount
+                  20% discount
                 </h3>
               </BoxSelector>
             </div>
@@ -180,8 +390,8 @@ function App() {
                 <h1 className="opacity-50">Base on your selections</h1>
               </div>
               <div className="flex flex-col items-end gap-1.5">
-                <span className="text-4xl">{handleQuoteResults()}</span>
-                <h1 className="opacity-50 text-[12px]">10% discount applied</h1>
+                <span className="text-4xl">${finalPrice}</span>
+                <h1 className="opacity-50 text-[12px]">{contractLength ?? ""}</h1>
               </div>
             </div>
             <CustomButton>Get Your Quote</CustomButton>
