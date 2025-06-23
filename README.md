@@ -1,5 +1,7 @@
 # 📊 Quote Calculator – Social Media Pricing Tool
 
+![alt text](<MacBook Pro 14_ - 2.png>)
+
 A dynamic and interactive web app that allows potential clients to build their own quote based on selected social media platforms, content services, and posting frequency. Designed to simplify pricing for digital service packages in a modern, user-friendly way.
 
 ---
