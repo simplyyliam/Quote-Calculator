@@ -1,54 +1,35 @@
-# React + TypeScript + Vite
+# 📊 Quote Calculator – Social Media Pricing Tool
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A dynamic and interactive web app that allows potential clients to build their own quote based on selected social media platforms, content services, and posting frequency. Designed to simplify pricing for digital service packages in a modern, user-friendly way.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+- Select from popular platforms: Instagram, TikTok, YouTube, Pinterest, etc.
+- Choose services under **Strategy & Reporting** and **Content Creation**
+- Adjust the number of posts per week with a live slider
+- Choose a contract duration and automatically apply discounts
+- Instant monthly pricing estimate with breakdown
+- Clean and minimal UI with a premium agency feel
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🧱 Tech Stack
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+| Layer       | Tool               |
+|-------------|--------------------|
+| Framework   | Next.js (React)    |
+| Styling     | TailwindCSS        |
+| State Mgmt  | useState / useEffect |
+| Animations  | Framer Motion *(optional)* |
+| Deployment  | Vercel             |
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 🚀 Getting Started
+
+### 1. Clone the repo
+```bash
+git clone https://github.com/simplyyliam/Quote-Calculator.git
+cd quote-calculator
