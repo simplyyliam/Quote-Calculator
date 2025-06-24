@@ -8,15 +8,16 @@ import { useCallback } from "react";
 
 function App() {
   // Single-select for Contract length
-  const [selectedContractLength, setselectedContractLength] = useState<number | null>(null);
+  const [selectedContractLength, setselectedContractLength] = useState<
+    number | null
+  >(null);
   const [selectedPlatforms, setSelectedPlatforms] = useState<number[]>([]);
   const [postValue, setPostValue] = useState<number | null>(0);
-  
-  const [contractLength, setContractLength] = useState<string | null>(null)
-  const [selectedStrategy, setSelectedStrategy] = useState<string[]>([])
-  const [selectedContent, setSelectedContent] = useState<string[]>([])
-  const [finalPrice, setFinalPrice] = useState<number>(0);
 
+  const [contractLength, setContractLength] = useState<string | null>(null);
+  const [selectedStrategy, setSelectedStrategy] = useState<string[]>([]);
+  const [selectedContent, setSelectedContent] = useState<string[]>([]);
+  const [finalPrice, setFinalPrice] = useState<number>(0);
 
   // Set Contract length selection
   const handleContractLengthClick = (idx: number) => {
@@ -60,118 +61,77 @@ function App() {
       default:
         return "";
     }
-  }
-const getStrategyPrice = (item: string) => {
-  switch (item) {
-    case "Social Media Strategy":
-      return 100
-    case "Competitor Analysis":
-      return 80
-    case "Monthly Performance Reports":
-      return 70
-    default:
-      return 0
-  }
-}
+  };
+  const getStrategyPrice = (item: string) => {
+    switch (item) {
+      case "Social Media Strategy":
+        return 100;
+      case "Competitor Analysis":
+        return 80;
+      case "Monthly Performance Reports":
+        return 70;
+      default:
+        return 0;
+    }
+  };
 
-const getContentPrice = (item: string) => {
-  switch (item) {
-    case "Custom Graphics":
-      return 150
-    case "Copywriting":
-      return 120
-    case "Photography":
-      return 200
-    default:
-      return 0
-  }
-}
+  const getContentPrice = (item: string) => {
+    switch (item) {
+      case "Custom Graphics":
+        return 150;
+      case "Copywriting":
+        return 120;
+      case "Photography":
+        return 200;
+      default:
+        return 0;
+    }
+  };
+
+  const calculateTotal = useCallback(() => {
+    let total = 0;
+
+    selectedPlatforms.forEach((idx) => {
+      total += getPlatformPrice(idx);
+    });
+
+    selectedStrategy.forEach((item) => {
+      total += getStrategyPrice(item);
+    });
+
+    selectedContent.forEach((item) => {
+      total += getContentPrice(item);
+    });
+
+    if (postValue) {
+      total *= postValue;
+    }
+
+    if (selectedContractLength !== null) {
+      switch (selectedContractLength) {
+        case 1: // 3 Months
+          total = total - total * 0.1;
+          break;
+        case 2: // 6 Months
+          total = total - total * 0.2;
+          break;
+        default:
+          break;
+      }
+    }
+
+    setFinalPrice(Math.round(total));
+  }, [
+    selectedPlatforms,
+    selectedStrategy,
+    selectedContent,
+    postValue,
+    selectedContractLength,
+  ]);
 
   useEffect(() => {
-    const handlePlatforms = () => {
-      let total = 0
-
-      selectedPlatforms.forEach((idx) => {
-        total += getPlatformPrice(idx)
-      })
-
-      console.log(total)
-    };
-    const handleContractLength = () => {
-      if (selectedContractLength !== null) {
-        const discount = getContractLength(selectedContractLength)
-        setContractLength(discount)
-        console.log(discount)
-      }
-
-    };
-    const handleStrategyReporting = () => {
-      let total = 0;
-      selectedStrategy.forEach((item) => {
-        total += getStrategyPrice(item);
-      });
-      console.log("Strategy Total:", total);
-    };
-    
-    const handleContentCreation = () => {
-      let total = 0;
-      selectedContent.forEach((item) => {
-        total += getContentPrice(item);
-      });
-      console.log("Content Total:", total);
-    };
-
-    handlePlatforms()
-    handleContractLength()
-    handleStrategyReporting()
-    handleContentCreation()
-  }, [selectedPlatforms, selectedContractLength, selectedContent, selectedStrategy]);
-
-const calculateTotal = useCallback(() => {
-  let total = 0;
-
-  selectedPlatforms.forEach((idx) => {
-    total += getPlatformPrice(idx);
-  });
-
-  selectedStrategy.forEach((item) => {
-    total += getStrategyPrice(item);
-  });
-
-  selectedContent.forEach((item) => {
-    total += getContentPrice(item);
-  });
-
-  if (postValue) {
-    total *= postValue;
-  }
-
-  if (selectedContractLength !== null) {
-    switch (selectedContractLength) {
-      case 1: // 3 Months
-        total = total - total * 0.1; 
-        break;
-      case 2: // 6 Months
-        total = total - total * 0.2;
-        break;
-      default:
-        break;
-    }
-  }
-
-  setFinalPrice(Math.round(total));
-}, [
-  selectedPlatforms,
-  selectedStrategy,
-  selectedContent,
-  postValue,
-  selectedContractLength,
-]);
-
-useEffect(() => {
-  calculateTotal()
-}, [calculateTotal]);
-
+    calculateTotal();
+  }, [calculateTotal]);
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
@@ -210,7 +170,9 @@ useEffect(() => {
               />
               <Selector
                 label="Monthly Performance Reports"
-                checked={selectedStrategy.includes("Monthly Performance Reports")}
+                checked={selectedStrategy.includes(
+                  "Monthly Performance Reports"
+                )}
                 onChange={() => {
                   const label = "Monthly Performance Reports";
                   setSelectedStrategy((prev) =>
@@ -263,6 +225,16 @@ useEffect(() => {
                 }}
               />
             </div>
+          </div>
+          
+          {/* Community Management */}
+          <div className="flex flex-col gap-3">
+            <h1 className="text-lg font-medium">Community Management</h1>
+              <select name="community-management" id="community-management" className="border border-black/50 max-w-[18em] py-2.5 px-5 rounded-lg">
+                <option value="none">None</option>
+                <option value="standard">Standard (2 hours/day)</option>
+                <option value="premium">Premium (3+ hours/day)</option>
+              </select>
           </div>
 
           {/* Contract Lengths */}
@@ -391,7 +363,9 @@ useEffect(() => {
               </div>
               <div className="flex flex-col items-end gap-1.5">
                 <span className="text-4xl">${finalPrice}</span>
-                <h1 className="opacity-50 text-[12px]">{contractLength ?? ""}</h1>
+                <h1 className="opacity-50 text-[12px]">
+                  {contractLength ?? ""}
+                </h1>
               </div>
             </div>
             <CustomButton>Get Your Quote</CustomButton>
