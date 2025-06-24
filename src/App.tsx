@@ -18,6 +18,7 @@ function App() {
   const [selectedStrategy, setSelectedStrategy] = useState<string[]>([]);
   const [selectedContent, setSelectedContent] = useState<string[]>([]);
   const [finalPrice, setFinalPrice] = useState<number>(0);
+  const [communityManagement, setCommunityManagement] = useState<string>("none");
 
   // Set Contract length selection
   const handleContractLengthClick = (idx: number) => {
@@ -50,18 +51,6 @@ function App() {
     }
   };
 
-  const getContractLength = (Contract: number): string => {
-    switch (Contract) {
-      case 0:
-        return "No discount";
-      case 1:
-        return "10% discount";
-      case 2:
-        return "20% discount";
-      default:
-        return "";
-    }
-  };
   const getStrategyPrice = (item: string) => {
     switch (item) {
       case "Social Media Strategy":
@@ -88,6 +77,22 @@ function App() {
     }
   };
 
+
+  const getCommunityManagement = (item: string) => {
+    switch (item) {
+      case "none":
+        return 0;
+      case "basic":
+        return 100;
+      case "standard":
+        return 200;
+      case "premium":
+        return 300;
+      default:
+        return 0;
+    }
+  } 
+
   const calculateTotal = useCallback(() => {
     let total = 0;
 
@@ -103,6 +108,9 @@ function App() {
       total += getContentPrice(item);
     });
 
+
+    total += getCommunityManagement(communityManagement);
+
     if (postValue) {
       total *= postValue;
     }
@@ -111,11 +119,14 @@ function App() {
       switch (selectedContractLength) {
         case 1: // 3 Months
           total = total - total * 0.1;
+          setContractLength("10% discount")
           break;
         case 2: // 6 Months
           total = total - total * 0.2;
+          setContractLength("20% discount")
           break;
         default:
+          setContractLength("No discount")
           break;
       }
     }
@@ -127,6 +138,7 @@ function App() {
     selectedContent,
     postValue,
     selectedContractLength,
+    communityManagement
   ]);
 
   useEffect(() => {
@@ -230,11 +242,18 @@ function App() {
           {/* Community Management */}
           <div className="flex flex-col gap-3">
             <h1 className="text-lg font-medium">Community Management</h1>
-              <select name="community-management" id="community-management" className="border border-black/50 max-w-[18em] py-2.5 px-5 rounded-lg">
-                <option value="none">None</option>
-                <option value="standard">Standard (2 hours/day)</option>
-                <option value="premium">Premium (3+ hours/day)</option>
-              </select>
+            <select
+              name="community-management"
+              id="community-management"
+              className="border border-black/50 max-w-[18em] py-2.5 px-5 rounded-lg"
+              value={communityManagement}
+              onChange={e => setCommunityManagement(e.target.value)}
+            >
+              <option value="none">None</option>
+              <option value="basic">Basic (1 hour/day)</option>
+              <option value="standard">Standard (2 hours/day)</option>
+              <option value="premium">Premium (3+ hours/day)</option>
+            </select>
           </div>
 
           {/* Contract Lengths */}
