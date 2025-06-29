@@ -146,157 +146,156 @@ function App() {
   }, [calculateTotal]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-[#f7fafd] to-[#e3e8f0]">
       <NavBar>Quote Calculator</NavBar>
-
-      <div className="flex items-center justify-center w-auto h-auto gap-15 ">
-        {/* First Layout */}
-        <Box>
-          {/* Strategy & Reporting */}
-          <div className="flex flex-col gap-3">
-            <h1 className="text-xl font-medium">Strategy & Reporting</h1>
-            <div className="flex flex-col gap-2 ml-8">
-              <Selector
-                label="Social Media Strategy"
-                checked={selectedStrategy.includes("Social Media Strategy")}
-                onChange={() => {
-                  const label = "Social Media Strategy";
-                  setSelectedStrategy((prev) =>
-                    prev.includes(label)
-                      ? prev.filter((item) => item !== label)
-                      : [...prev, label]
-                  );
-                }}
-              />
-              <Selector
-                label="Competitor Analysis"
-                checked={selectedStrategy.includes("Competitor Analysis")}
-                onChange={() => {
-                  const label = "Competitor Analysis";
-                  setSelectedStrategy((prev) =>
-                    prev.includes(label)
-                      ? prev.filter((item) => item !== label)
-                      : [...prev, label]
-                  );
-                }}
-              />
-              <Selector
-                label="Monthly Performance Reports"
-                checked={selectedStrategy.includes(
-                  "Monthly Performance Reports"
-                )}
-                onChange={() => {
-                  const label = "Monthly Performance Reports";
-                  setSelectedStrategy((prev) =>
-                    prev.includes(label)
-                      ? prev.filter((item) => item !== label)
-                      : [...prev, label]
-                  );
-                }}
-              />
+      <main className="max-w-6xl mx-auto py-12 px-4 flex flex-col md:flex-row gap-8">
+        {/* Left: Configuration */}
+        <section className="flex-1 flex flex-col gap-8">
+          <Box className="bg-white shadow-lg rounded-2xl p-8">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900">Configuration</h2>
+            {/* Strategy & Reporting */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">Strategy & Reporting</h3>
+              <div className="flex flex-col gap-2 ml-2">
+                <Selector
+                  label="Social Media Strategy"
+                  checked={selectedStrategy.includes("Social Media Strategy")}
+                  onChange={() => {
+                    const label = "Social Media Strategy";
+                    setSelectedStrategy((prev) =>
+                      prev.includes(label)
+                        ? prev.filter((item) => item !== label)
+                        : [...prev, label]
+                    );
+                  }}
+                />
+                <Selector
+                  label="Competitor Analysis"
+                  checked={selectedStrategy.includes("Competitor Analysis")}
+                  onChange={() => {
+                    const label = "Competitor Analysis";
+                    setSelectedStrategy((prev) =>
+                      prev.includes(label)
+                        ? prev.filter((item) => item !== label)
+                        : [...prev, label]
+                    );
+                  }}
+                />
+                <Selector
+                  label="Monthly Performance Reports"
+                  checked={selectedStrategy.includes(
+                    "Monthly Performance Reports"
+                  )}
+                  onChange={() => {
+                    const label = "Monthly Performance Reports";
+                    setSelectedStrategy((prev) =>
+                      prev.includes(label)
+                        ? prev.filter((item) => item !== label)
+                        : [...prev, label]
+                    );
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          {/* Content Creation */}
-          <div className="flex flex-col gap-3">
-            <h1 className="text-xl font-medium">Content Creation</h1>
-            <div className="flex flex-col gap-2 ml-8">
-              <Selector
-                label="Custom Graphics"
-                checked={selectedContent.includes("Custom Graphics")}
-                onChange={() => {
-                  const label = "Custom Graphics";
-                  setSelectedContent((prev) =>
-                    prev.includes(label)
-                      ? prev.filter((item) => item !== label)
-                      : [...prev, label]
-                  );
-                }}
-              />
-              <Selector
-                label="Copywriting"
-                checked={selectedContent.includes("Copywriting")}
-                onChange={() => {
-                  const label = "Copywriting";
-                  setSelectedContent((prev) =>
-                    prev.includes(label)
-                      ? prev.filter((item) => item !== label)
-                      : [...prev, label]
-                  );
-                }}
-              />
-              <Selector
-                label="Photography"
-                checked={selectedContent.includes("Photography")}
-                onChange={() => {
-                  const label = "Photography";
-                  setSelectedContent((prev) =>
-                    prev.includes(label)
-                      ? prev.filter((item) => item !== label)
-                      : [...prev, label]
-                  );
-                }}
-              />
+            {/* Content Creation */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">Content Creation</h3>
+              <div className="flex flex-col gap-2 ml-2">
+                <Selector
+                  label="Custom Graphics"
+                  checked={selectedContent.includes("Custom Graphics")}
+                  onChange={() => {
+                    const label = "Custom Graphics";
+                    setSelectedContent((prev) =>
+                      prev.includes(label)
+                        ? prev.filter((item) => item !== label)
+                        : [...prev, label]
+                    );
+                  }}
+                />
+                <Selector
+                  label="Copywriting"
+                  checked={selectedContent.includes("Copywriting")}
+                  onChange={() => {
+                    const label = "Copywriting";
+                    setSelectedContent((prev) =>
+                      prev.includes(label)
+                        ? prev.filter((item) => item !== label)
+                        : [...prev, label]
+                    );
+                  }}
+                />
+                <Selector
+                  label="Photography"
+                  checked={selectedContent.includes("Photography")}
+                  onChange={() => {
+                    const label = "Photography";
+                    setSelectedContent((prev) =>
+                      prev.includes(label)
+                        ? prev.filter((item) => item !== label)
+                        : [...prev, label]
+                    );
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          
-          {/* Community Management */}
-          <div className="flex flex-col gap-3">
-            <h1 className="text-lg font-medium">Community Management</h1>
-            <select
-              name="community-management"
-              id="community-management"
-              className="border border-black/50 max-w-[18em] py-2.5 px-5 rounded-lg"
-              value={communityManagement}
-              onChange={e => setCommunityManagement(e.target.value)}
-            >
-              <option value="none">None</option>
-              <option value="basic">Basic (1 hour/day)</option>
-              <option value="standard">Standard (2 hours/day)</option>
-              <option value="premium">Premium (3+ hours/day)</option>
-            </select>
-          </div>
-
-          {/* Contract Lengths */}
-          <div className="flex flex-col gap-3">
-            <h1 className="text-xl font-medium">Contract Length</h1>
-            <div className="flex gap-2">
-              <BoxSelector
-                isSelected={selectedContractLength === 0}
-                onClick={() => handleContractLengthClick(0)}
+            {/* Community Management */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">Community Management</h3>
+              <select
+                name="community-management"
+                id="community-management"
+                className="border border-gray-300 py-2 px-4 rounded-lg bg-gray-50"
+                value={communityManagement}
+                onChange={e => setCommunityManagement(e.target.value)}
               >
-                <h1 className="text-[16px] font-medium">Monthly</h1>
-                <h3 className="text-[14px] font-light opacity-50">
-                  No discount
-                </h3>
-              </BoxSelector>
-              <BoxSelector
-                isSelected={selectedContractLength === 1}
-                onClick={() => handleContractLengthClick(1)}
-              >
-                <h1 className="text-[16px] font-medium">3 Months</h1>
-                <h3 className="text-[14px] font-light opacity-50">
-                  10% discount
-                </h3>
-              </BoxSelector>
-              <BoxSelector
-                isSelected={selectedContractLength === 2}
-                onClick={() => handleContractLengthClick(2)}
-              >
-                <h1 className="text-[16px] font-medium">6 Months</h1>
-                <h3 className="text-[14px] font-light opacity-50">
-                  20% discount
-                </h3>
-              </BoxSelector>
+                <option value="none">None</option>
+                <option value="basic">Basic (1 hour/day)</option>
+                <option value="standard">Standard (2 hours/day)</option>
+                <option value="premium">Premium (3+ hours/day)</option>
+              </select>
             </div>
-          </div>
-        </Box>
+            {/* Contract Lengths */}
+            <div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">Contract Length</h3>
+              <div className="flex gap-3">
+                <BoxSelector
+                  isSelected={selectedContractLength === 0}
+                  onClick={() => handleContractLengthClick(0)}
+                >
+                  <h1 className="text-[16px] font-medium">Monthly</h1>
+                  <h3 className="text-[14px] font-light opacity-50">
+                    No discount
+                  </h3>
+                </BoxSelector>
+                <BoxSelector
+                  isSelected={selectedContractLength === 1}
+                  onClick={() => handleContractLengthClick(1)}
+                >
+                  <h1 className="text-[16px] font-medium">3 Months</h1>
+                  <h3 className="text-[14px] font-light opacity-50">
+                    10% discount
+                  </h3>
+                </BoxSelector>
+                <BoxSelector
+                  isSelected={selectedContractLength === 2}
+                  onClick={() => handleContractLengthClick(2)}
+                >
+                  <h1 className="text-[16px] font-medium">6 Months</h1>
+                  <h3 className="text-[14px] font-light opacity-50">
+                    20% discount
+                  </h3>
+                </BoxSelector>
+              </div>
+            </div>
+          </Box>
+        </section>
 
-        {/* Second Layout */}
-        <Box>
-          {/* Platforms */}
-          <div className="flex flex-col gap-3">
-            <h1 className="text-xl font-medium">Select Platforms</h1>
-            <div className="grid grid-cols-3 grid-rows-2 gap-2">
+        {/* Right: Platforms and Results */}
+        <section className="flex-1 flex flex-col gap-8">
+          <Box className="bg-white shadow-lg rounded-2xl p-8 mb-8">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900">Platforms</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <BoxSelector
                 className="h-auto p-4"
                 isSelected={selectedPlatforms.includes(0)}
@@ -352,45 +351,43 @@ function App() {
                 <h3 className="text-[14px] font-light opacity-50">$100</h3>
               </BoxSelector>
             </div>
-          </div>
-          {/* Post Slider */}
-          <div className="flex flex-col items-center justify-center w-full">
-            <div className="flex items-center justify-between w-full">
-              <h1 className=" text-[16px] font-medium">Posts Per Weeks</h1>
-              <span>{postValue}</span>
-            </div>
-            <input
-              type="range"
-              min={1}
-              max={7}
-              value={`${postValue}`}
-              onChange={(e) => setPostValue(Number(e.target.value))}
-              className="w-full"
-            />
-            <div className="flex items-center justify-between w-full">
-              <span>1</span>
-              <span>7</span>
-            </div>
-          </div>
-
-          {/* Results Box  */}
-          <div className="flex flex-col w-full h-auto p-4 gap-4 bg-[#0D0D0D] text-white rounded-xl">
-            <div className="flex items-center justify-between w-full">
-              <div className="flex flex-col gap-1.5">
-                <h1 className="font-medium">Your Estimated Monthly Price</h1>
-                <h1 className="opacity-50">Base on your selections</h1>
+            {/* Post Slider */}
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-gray-700">Posts Per Week</span>
+                <span className="font-semibold text-blue-600">{postValue}</span>
               </div>
-              <div className="flex flex-col items-end gap-1.5">
-                <span className="text-4xl">${finalPrice}</span>
-                <h1 className="opacity-50 text-[12px]">
-                  {contractLength ?? ""}
-                </h1>
+              <input
+                type="range"
+                min={1}
+                max={7}
+                value={postValue ?? 1}
+                onChange={(e) => setPostValue(Number(e.target.value))}
+              />
+              <div className="flex items-center justify-between text-xs text-gray-400 mt-1">
+                <span>1</span>
+                <span>7</span>
               </div>
             </div>
-            <CustomButton>Get Your Quote</CustomButton>
-          </div>
-        </Box>
-      </div>
+          </Box>
+          {/* Results Box */}
+          <Box className="bg-gradient-to-r from-blue-600 to-blue-400 text-white shadow-xl rounded-2xl p-8">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-xl font-semibold">Estimated Monthly Price</h2>
+                <p className="opacity-80 text-sm">Based on your selections</p>
+              </div>
+              <div className="text-right">
+                <span className="text-4xl font-bold">${finalPrice}</span>
+                <div className="opacity-80 text-xs">{contractLength ?? ""}</div>
+              </div>
+            </div>
+            <CustomButton className="w-full mt-4 bg-white text-blue-600 hover:bg-blue-50 font-semibold">
+              Get Your Quote
+            </CustomButton>
+          </Box>
+        </section>
+      </main>
     </div>
   );
 }
