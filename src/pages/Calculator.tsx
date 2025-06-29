@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { Box } from "../components/box";
@@ -17,6 +16,8 @@ function Calculator() {
   const [selectedContent, setSelectedContent] = useState<string[]>([]);
   const [finalPrice, setFinalPrice] = useState<number>(0);
   const [communityManagement, setCommunityManagement] = useState<string>("none");
+  const [currency, setCurrency] = useState<"USD" | "ZAR">("USD");
+  const USD_TO_ZAR = 18.5;
 
   // Set Contract length selection
   const handleContractLengthClick = (idx: number) => {
@@ -91,6 +92,9 @@ function Calculator() {
     }
   } 
 
+  const getCurrencySymbol = () => (currency === "USD" ? "$" : "R");
+  const convertPrice = (usd: number) => currency === "USD" ? usd : Math.round(usd * USD_TO_ZAR);
+
   const calculateTotal = useCallback(() => {
     let total = 0;
 
@@ -144,12 +148,23 @@ function Calculator() {
   }, [calculateTotal]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f7fafd] to-[#e3e8f0]">
+    <div className="min-h-screen pt-5">
       <main className="max-w-6xl mx-auto py-12 px-4 flex flex-col md:flex-row gap-8">
         {/* Left: Configuration */}
         <section className="flex-1 flex flex-col gap-8">
           <Box className="bg-white shadow-lg rounded-2xl p-8">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">Configuration</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Configuration</h2>
+              {/* Currency Picker */}
+              <select
+                className="border border-gray-300 py-1 px-3 rounded bg-gray-50 text-sm"
+                value={currency}
+                onChange={e => setCurrency(e.target.value as "USD" | "ZAR")}
+              >
+                <option value="USD">USD ($)</option>
+                <option value="ZAR">ZAR (R)</option>
+              </select>
+            </div>
             {/* Strategy & Reporting */}
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-2 text-gray-800">Strategy & Reporting</h3>
@@ -300,7 +315,9 @@ function Calculator() {
               >
                 <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
                 <h1 className="text-[16px]">Faceboox</h1>
-                <h3 className="text-[14px] font-light opacity-50">$150</h3>
+                <h3 className="text-[14px] font-light opacity-50">
+                  {getCurrencySymbol()}{convertPrice(150)}
+                </h3>
               </BoxSelector>
               <BoxSelector
                 className="h-auto p-4"
@@ -309,7 +326,9 @@ function Calculator() {
               >
                 <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
                 <h1 className="text-[16px]">Instagram</h1>
-                <h3 className="text-[14px] font-light opacity-50">$220</h3>
+                <h3 className="text-[14px] font-light opacity-50">
+                  {getCurrencySymbol()}{convertPrice(220)}
+                </h3>
               </BoxSelector>
               <BoxSelector
                 className="h-auto p-4"
@@ -318,7 +337,9 @@ function Calculator() {
               >
                 <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
                 <h1 className="text-[16px]">YouTube</h1>
-                <h3 className="text-[14px] font-light opacity-50">$250</h3>
+                <h3 className="text-[14px] font-light opacity-50">
+                  {getCurrencySymbol()}{convertPrice(250)}
+                </h3>
               </BoxSelector>
               <BoxSelector
                 className="h-auto p-4"
@@ -327,7 +348,9 @@ function Calculator() {
               >
                 <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
                 <h1 className="text-[16px]">Linkdin</h1>
-                <h3 className="text-[14px] font-light opacity-50">$175</h3>
+                <h3 className="text-[14px] font-light opacity-50">
+                  {getCurrencySymbol()}{convertPrice(175)}
+                </h3>
               </BoxSelector>
               <BoxSelector
                 className="h-auto p-4"
@@ -336,7 +359,9 @@ function Calculator() {
               >
                 <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
                 <h1 className="text-[16px]">TikTok</h1>
-                <h3 className="text-[14px] font-light opacity-50">$225</h3>
+                <h3 className="text-[14px] font-light opacity-50">
+                  {getCurrencySymbol()}{convertPrice(225)}
+                </h3>
               </BoxSelector>
               <BoxSelector
                 className="h-auto p-4"
@@ -345,7 +370,9 @@ function Calculator() {
               >
                 <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
                 <h1 className="text-[16px]">Pinterest</h1>
-                <h3 className="text-[14px] font-light opacity-50">$100</h3>
+                <h3 className="text-[14px] font-light opacity-50">
+                  {getCurrencySymbol()}{convertPrice(100)}
+                </h3>
               </BoxSelector>
             </div>
             {/* Post Slider */}
@@ -375,7 +402,9 @@ function Calculator() {
                 <h1 className="opacity-50">Base on your selections</h1>
               </div>
               <div className="flex flex-col items-end gap-1.5">
-                <span className="text-4xl">${finalPrice}</span>
+                <span className="text-4xl">
+                  {getCurrencySymbol()}{currency === "USD" ? finalPrice : Math.round(finalPrice * USD_TO_ZAR)}
+                </span>
                 <h1 className="opacity-50 text-[12px]">
                   {contractLength ?? ""}
                 </h1>
