@@ -1,421 +1,538 @@
-import { useEffect, useState } from "react";
-import { useCallback } from "react";
+// Refactored Calculator Component with cleaner UI and Apple-inspired premium styling
+import { useEffect, useState, useCallback } from "react";
 import { Box } from "../components/box";
 import { BoxSelector } from "../components/BoxSelector";
 import { CustomButton } from "../components/CustomButton";
 import { Selector } from "../components/selectors";
+import { CurrencyToggle } from "../components/CurrencyToggle";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+  FaLinkedinIn,
+  FaTiktok,
+  FaPinterestP,
+} from "react-icons/fa";
+import { QuoteModal } from "../components/QuoteModal";
 
 function Calculator() {
-  // Single-select for Contract length
-  const [selectedContractLength, setselectedContractLength] = useState<number | null>(null);
+  const [selectedContractLength, setContractLengthIndex] = useState<
+    number | null
+  >(null);
   const [selectedPlatforms, setSelectedPlatforms] = useState<number[]>([]);
-  const [postValue, setPostValue] = useState<number | null>(0);
+  const [postValue, setPostValue] = useState<number>(1);
+  const [contractLength, setContractLength] = useState<string>("");
+  const [selectedStrategy, setSelectedStrategy] = useState<StrategyKey[]>([]);
+  const [selectedContent, setSelectedContent] = useState<ContentKey[]>([]);
+  const [communityManagement, setCommunityManagement] =
+    useState<CommunityKey>("none");
 
-  const [contractLength, setContractLength] = useState<string | null>(null);
-  const [selectedStrategy, setSelectedStrategy] = useState<string[]>([]);
-  const [selectedContent, setSelectedContent] = useState<string[]>([]);
+  type StrategyKey = keyof typeof getPriceMap.strategy;
+  type ContentKey = keyof typeof getPriceMap.content;
+  type CommunityKey = keyof typeof getPriceMap.community;
+
   const [finalPrice, setFinalPrice] = useState<number>(0);
-  const [communityManagement, setCommunityManagement] = useState<string>("none");
   const [currency, setCurrency] = useState<"USD" | "ZAR">("USD");
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [isConsultationModalOpen, setConsultationModalOpen] = useState(false);
+
   const USD_TO_ZAR = 18.5;
 
-  // Set Contract length selection
-  const handleContractLengthClick = (idx: number) => {
-    setselectedContractLength(idx);
-  };
-
-  // Toggle platform selection (multi-select)
-  const handlePlatformClick = (idx: number) => {
-    setSelectedPlatforms((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+  function toggleSelection<T>(
+    setState: React.Dispatch<React.SetStateAction<T[]>>,
+    value: T
+  ) {
+    setState((prev) =>
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
     );
-  };
+  }
 
-  const getPlatformPrice = (platformIdx: number): number => {
-    switch (platformIdx) {
-      case 0:
-        return 150; // Facebook
-      case 1:
-        return 220; // Instagram
-      case 2:
-        return 250; // YouTube
-      case 3:
-        return 175; // LinkedIn
-      case 4:
-        return 225; // TikTok
-      case 5:
-        return 100; // Pinterest
-      default:
-        return 0;
-    }
-  };
-
-  const getStrategyPrice = (item: string) => {
-    switch (item) {
-      case "Social Media Strategy":
-        return 100;
-      case "Competitor Analysis":
-        return 80;
-      case "Monthly Performance Reports":
-        return 70;
-      default:
-        return 0;
-    }
-  };
-
-  const getContentPrice = (item: string) => {
-    switch (item) {
-      case "Custom Graphics":
-        return 150;
-      case "Copywriting":
-        return 120;
-      case "Photography":
-        return 200;
-      default:
-        return 0;
-    }
-  };
-
-
-  const getCommunityManagement = (item: string) => {
-    switch (item) {
-      case "none":
-        return 0;
-      case "basic":
-        return 100;
-      case "standard":
-        return 200;
-      case "premium":
-        return 300;
-      default:
-        return 0;
-    }
-  } 
+  const getPriceMap = {
+    platforms: [150, 220, 250, 175, 225, 100],
+    strategy: {
+      "Social Media Strategy": 100,
+      "Competitor Analysis": 80,
+      "Monthly Performance Reports": 70,
+    },
+    content: {
+      "Custom Graphics": 150,
+      Copywriting: 120,
+      Photography: 200,
+    },
+    community: {
+      none: 0,
+      basic: 100,
+      standard: 200,
+      premium: 300,
+    },
+  } as const;
 
   const getCurrencySymbol = () => (currency === "USD" ? "$" : "R");
-  const convertPrice = (usd: number) => currency === "USD" ? usd : Math.round(usd * USD_TO_ZAR);
+  const convertPrice = (usd: number) =>
+    currency === "USD" ? usd : Math.round(usd * USD_TO_ZAR);
 
   const calculateTotal = useCallback(() => {
     let total = 0;
 
     selectedPlatforms.forEach((idx) => {
-      total += getPlatformPrice(idx);
+      total += getPriceMap.platforms[idx] || 0;
     });
 
     selectedStrategy.forEach((item) => {
-      total += getStrategyPrice(item);
+      total += getPriceMap.strategy[item] || 0;
     });
 
     selectedContent.forEach((item) => {
-      total += getContentPrice(item);
+      total += getPriceMap.content[item] || 0;
     });
 
+    total += getPriceMap.community[communityManagement] || 0;
+    total *= postValue;
 
-    total += getCommunityManagement(communityManagement);
-
-    if (postValue) {
-      total *= postValue;
-    }
-
-    if (selectedContractLength !== null) {
-      switch (selectedContractLength) {
-        case 1: // 3 Months
-          total = total - total * 0.1;
-          setContractLength("10% discount")
-          break;
-        case 2: // 6 Months
-          total = total - total * 0.2;
-          setContractLength("20% discount")
-          break;
-        default:
-          setContractLength("No discount")
-          break;
-      }
+    switch (selectedContractLength) {
+      case 1:
+        total *= 0.9;
+        setContractLength("10% discount");
+        break;
+      case 2:
+        total *= 0.8;
+        setContractLength("20% discount");
+        break;
+      default:
+        setContractLength("No discount");
     }
 
     setFinalPrice(Math.round(total));
   }, [
+    getPriceMap.community,
+    getPriceMap.content,
+    getPriceMap.platforms,
+    getPriceMap.strategy,
+    communityManagement,
+    postValue,
+    selectedContent,
+    selectedContractLength,
     selectedPlatforms,
     selectedStrategy,
-    selectedContent,
-    postValue,
-    selectedContractLength,
-    communityManagement
   ]);
 
   useEffect(() => {
     calculateTotal();
   }, [calculateTotal]);
 
+  const platformDetails = selectedPlatforms.map((idx) => {
+    const name = [
+      "Facebook",
+      "Instagram",
+      "YouTube",
+      "LinkedIn",
+      "TikTok",
+      "Pinterest",
+    ][idx];
+    const unitPrice = getPriceMap.platforms[idx];
+    const totalPrice = unitPrice * postValue;
+    return { name, unitPrice, totalPrice };
+  });
+
+  const strategyDetails = selectedStrategy.map((key) => ({
+    name: key,
+    price: getPriceMap.strategy[key],
+  }));
+
+  const contentDetails = selectedContent.map((key) => ({
+    name: key,
+    price: getPriceMap.content[key],
+  }));
+
+  const communityDetail = {
+    name:
+      communityManagement.charAt(0).toUpperCase() +
+      communityManagement.slice(1),
+    price: getPriceMap.community[communityManagement],
+  };
+
+  const discountText = contractLength; // e.g. "10% discount"
+
+  // function handleRequestConsultation() {
+  //   setModalOpen(false); // Close quote modal
+  //   setConsultationModalOpen(true); // Open consultation modal
+  // }
+
+  // function handleModifyQuote() {
+  //   setModalOpen(false);
+  // }
+
+  const platformIcons: Record<string, JSX.Element> = {
+    Facebook: <FaFacebookF className="text-blue-600" size={24} />,
+    Instagram: <FaInstagram className="text-pink-500" size={24} />,
+    YouTube: <FaYoutube className="text-red-600" size={24} />,
+    LinkedIn: <FaLinkedinIn className="text-blue-700" size={24} />,
+    TikTok: <FaTiktok className="text-black" size={24} />,
+    Pinterest: <FaPinterestP className="text-red-500" size={24} />,
+  };
+
   return (
-    <div className="min-h-screen pt-5">
-      <main className="max-w-6xl mx-auto py-12 px-4 flex flex-col md:flex-row gap-8">
-        {/* Left: Configuration */}
-        <section className="flex-1 flex flex-col gap-8">
-          <Box className="bg-white shadow-lg rounded-2xl p-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Configuration</h2>
-              {/* Currency Picker */}
-              <select
-                className="border border-gray-300 py-1 px-3 rounded bg-gray-50 text-sm"
-                value={currency}
-                onChange={e => setCurrency(e.target.value as "USD" | "ZAR")}
-              >
-                <option value="USD">USD ($)</option>
-                <option value="ZAR">ZAR (R)</option>
-              </select>
+    <div className="min-h-screen bg-[#f8f9fa] pt-5 font-sans">
+      <main className="max-w-6xl mx-auto py-12 px-4 flex flex-col md:flex-row gap-10">
+        <section className="flex-1 space-y-8">
+          <Box className="bg-white shadow-lg rounded-3xl p-8">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Configuration
+              </h2>
+              <CurrencyToggle currency={currency} onChange={setCurrency} />
             </div>
-            {/* Strategy & Reporting */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-2 text-gray-800">Strategy & Reporting</h3>
-              <div className="flex flex-col gap-2 ml-2">
-                <Selector
-                  label="Social Media Strategy"
-                  checked={selectedStrategy.includes("Social Media Strategy")}
-                  onChange={() => {
-                    const label = "Social Media Strategy";
-                    setSelectedStrategy((prev) =>
-                      prev.includes(label)
-                        ? prev.filter((item) => item !== label)
-                        : [...prev, label]
-                    );
-                  }}
-                />
-                <Selector
-                  label="Competitor Analysis"
-                  checked={selectedStrategy.includes("Competitor Analysis")}
-                  onChange={() => {
-                    const label = "Competitor Analysis";
-                    setSelectedStrategy((prev) =>
-                      prev.includes(label)
-                        ? prev.filter((item) => item !== label)
-                        : [...prev, label]
-                    );
-                  }}
-                />
-                <Selector
-                  label="Monthly Performance Reports"
-                  checked={selectedStrategy.includes(
-                    "Monthly Performance Reports"
+
+            <div className="space-y-8">
+              {/* Strategy & Reporting */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Strategy & Reporting
+                </h3>
+                <div className="space-y-3">
+                  {(Object.keys(getPriceMap.strategy) as StrategyKey[]).map(
+                    (label) => (
+                      <Selector
+                        key={label}
+                        label={label}
+                        checked={selectedStrategy.includes(label)}
+                        onChange={() =>
+                          toggleSelection<StrategyKey>(
+                            setSelectedStrategy,
+                            label
+                          )
+                        }
+                      />
+                    )
                   )}
-                  onChange={() => {
-                    const label = "Monthly Performance Reports";
-                    setSelectedStrategy((prev) =>
-                      prev.includes(label)
-                        ? prev.filter((item) => item !== label)
-                        : [...prev, label]
-                    );
-                  }}
-                />
+                </div>
               </div>
-            </div>
-            {/* Content Creation */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-2 text-gray-800">Content Creation</h3>
-              <div className="flex flex-col gap-2 ml-2">
-                <Selector
-                  label="Custom Graphics"
-                  checked={selectedContent.includes("Custom Graphics")}
-                  onChange={() => {
-                    const label = "Custom Graphics";
-                    setSelectedContent((prev) =>
-                      prev.includes(label)
-                        ? prev.filter((item) => item !== label)
-                        : [...prev, label]
-                    );
-                  }}
-                />
-                <Selector
-                  label="Copywriting"
-                  checked={selectedContent.includes("Copywriting")}
-                  onChange={() => {
-                    const label = "Copywriting";
-                    setSelectedContent((prev) =>
-                      prev.includes(label)
-                        ? prev.filter((item) => item !== label)
-                        : [...prev, label]
-                    );
-                  }}
-                />
-                <Selector
-                  label="Photography"
-                  checked={selectedContent.includes("Photography")}
-                  onChange={() => {
-                    const label = "Photography";
-                    setSelectedContent((prev) =>
-                      prev.includes(label)
-                        ? prev.filter((item) => item !== label)
-                        : [...prev, label]
-                    );
-                  }}
-                />
+
+              {/* Content Creation */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Content Creation
+                </h3>
+                <div className="space-y-3">
+                  {(Object.keys(getPriceMap.content) as ContentKey[]).map(
+                    (label) => (
+                      <Selector
+                        key={label}
+                        label={label}
+                        checked={selectedContent.includes(label)}
+                        onChange={() =>
+                          toggleSelection<ContentKey>(setSelectedContent, label)
+                        }
+                      />
+                    )
+                  )}
+                </div>
               </div>
-            </div>
-            {/* Community Management */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-2 text-gray-800">Community Management</h3>
-              <select
-                name="community-management"
-                id="community-management"
-                className="border border-gray-300 py-2 px-4 rounded-lg bg-gray-50"
-                value={communityManagement}
-                onChange={e => setCommunityManagement(e.target.value)}
-              >
-                <option value="none">None</option>
-                <option value="basic">Basic (1 hour/day)</option>
-                <option value="standard">Standard (2 hours/day)</option>
-                <option value="premium">Premium (3+ hours/day)</option>
-              </select>
-            </div>
-            {/* Contract Lengths */}
-            <div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-800">Contract Length</h3>
-              <div className="flex gap-3">
-                <BoxSelector
-                  isSelected={selectedContractLength === 0}
-                  onClick={() => handleContractLengthClick(0)}
+
+              {/* Community Management */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Community Management
+                </h3>
+                <select
+                  className="w-full border border-gray-300 rounded-lg py-2 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  value={communityManagement}
+                  onChange={(e) =>
+                    setCommunityManagement(e.target.value as CommunityKey)
+                  }
                 >
-                  <h1 className="text-[16px] font-medium">Monthly</h1>
-                  <h3 className="text-[14px] font-light opacity-50">
-                    No discount
-                  </h3>
-                </BoxSelector>
-                <BoxSelector
-                  isSelected={selectedContractLength === 1}
-                  onClick={() => handleContractLengthClick(1)}
-                >
-                  <h1 className="text-[16px] font-medium">3 Months</h1>
-                  <h3 className="text-[14px] font-light opacity-50">
-                    10% discount
-                  </h3>
-                </BoxSelector>
-                <BoxSelector
-                  isSelected={selectedContractLength === 2}
-                  onClick={() => handleContractLengthClick(2)}
-                >
-                  <h1 className="text-[16px] font-medium">6 Months</h1>
-                  <h3 className="text-[14px] font-light opacity-50">
-                    20% discount
-                  </h3>
-                </BoxSelector>
+                  {(Object.keys(getPriceMap.community) as CommunityKey[]).map(
+                    (level) => (
+                      <option key={level} value={level}>
+                        {level.charAt(0).toUpperCase() + level.slice(1)}
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+
+              {/* Contract Length */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Contract Length
+                </h3>
+                <div className="flex gap-4">
+                  {[
+                    { label: "Monthly", desc: "No discount" },
+                    { label: "3 Months", desc: "10% discount" },
+                    { label: "6 Months", desc: "20% discount" },
+                  ].map((item, idx) => (
+                    <BoxSelector
+                      key={item.label}
+                      isSelected={selectedContractLength === idx}
+                      onClick={() => setContractLengthIndex(idx)}
+                      className="transition-colors duration-200"
+                    >
+                      <h1 className="text-base font-semibold">{item.label}</h1>
+                      <p className="text-sm text-gray-500">{item.desc}</p>
+                    </BoxSelector>
+                  ))}
+                </div>
               </div>
             </div>
           </Box>
         </section>
 
-        {/* Right: Platforms and Results */}
-        <section className="flex-1 flex flex-col gap-8">
-          <Box className="bg-white shadow-lg rounded-2xl p-8 mb-8">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">Platforms</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <BoxSelector
-                className="h-auto p-4"
-                isSelected={selectedPlatforms.includes(0)}
-                onClick={() => handlePlatformClick(0)}
-              >
-                <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
-                <h1 className="text-[16px]">Faceboox</h1>
-                <h3 className="text-[14px] font-light opacity-50">
-                  {getCurrencySymbol()}{convertPrice(150)}
-                </h3>
-              </BoxSelector>
-              <BoxSelector
-                className="h-auto p-4"
-                isSelected={selectedPlatforms.includes(1)}
-                onClick={() => handlePlatformClick(1)}
-              >
-                <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
-                <h1 className="text-[16px]">Instagram</h1>
-                <h3 className="text-[14px] font-light opacity-50">
-                  {getCurrencySymbol()}{convertPrice(220)}
-                </h3>
-              </BoxSelector>
-              <BoxSelector
-                className="h-auto p-4"
-                isSelected={selectedPlatforms.includes(2)}
-                onClick={() => handlePlatformClick(2)}
-              >
-                <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
-                <h1 className="text-[16px]">YouTube</h1>
-                <h3 className="text-[14px] font-light opacity-50">
-                  {getCurrencySymbol()}{convertPrice(250)}
-                </h3>
-              </BoxSelector>
-              <BoxSelector
-                className="h-auto p-4"
-                isSelected={selectedPlatforms.includes(3)}
-                onClick={() => handlePlatformClick(3)}
-              >
-                <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
-                <h1 className="text-[16px]">Linkdin</h1>
-                <h3 className="text-[14px] font-light opacity-50">
-                  {getCurrencySymbol()}{convertPrice(175)}
-                </h3>
-              </BoxSelector>
-              <BoxSelector
-                className="h-auto p-4"
-                isSelected={selectedPlatforms.includes(4)}
-                onClick={() => handlePlatformClick(4)}
-              >
-                <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
-                <h1 className="text-[16px]">TikTok</h1>
-                <h3 className="text-[14px] font-light opacity-50">
-                  {getCurrencySymbol()}{convertPrice(225)}
-                </h3>
-              </BoxSelector>
-              <BoxSelector
-                className="h-auto p-4"
-                isSelected={selectedPlatforms.includes(5)}
-                onClick={() => handlePlatformClick(5)}
-              >
-                <div className="flex items-center justify-center w-[50px] h-[50px] bg-stone-200 rounded-full"></div>
-                <h1 className="text-[16px]">Pinterest</h1>
-                <h3 className="text-[14px] font-light opacity-50">
-                  {getCurrencySymbol()}{convertPrice(100)}
-                </h3>
-              </BoxSelector>
+        <section className="flex-1 space-y-10">
+          <Box className="bg-white shadow-lg rounded-3xl p-8">
+            <h2 className="text-2xl font-semibold mb-8 text-gray-900">
+              Platforms
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+              {[
+                "Facebook",
+                "Instagram",
+                "YouTube",
+                "LinkedIn",
+                "TikTok",
+                "Pinterest",
+              ].map((label, idx) => (
+                <BoxSelector
+                  key={label}
+                  className="flex flex-col items-center justify-center gap-1 p-6 h-[120px] transition-shadow hover:shadow-md rounded-lg"
+                  isSelected={selectedPlatforms.includes(idx)}
+                  onClick={() =>
+                    setSelectedPlatforms((prev) =>
+                      prev.includes(idx)
+                        ? prev.filter((i) => i !== idx)
+                        : [...prev, idx]
+                    )
+                  }
+                >
+                  <div
+                    className={`flex items-center justify-center w-14 h-14 transition-transform duration-200 ${
+                      selectedPlatforms.includes(idx)
+                        ? "text-gray-700 scale-105"
+                        : "text-gray-400"
+                    } hover:scale-105`}
+                  >
+                    {platformIcons[label]}
+                  </div>
+                  <h3
+                    className={`text-base font-semibold transition-colors duration-200 ${
+                      selectedPlatforms.includes(idx)
+                        ? "text-gray-900"
+                        : "text-gray-800 hover:text-gray-900"
+                    }`}
+                  >
+                    {label}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {getCurrencySymbol()}
+                    {convertPrice(getPriceMap.platforms[idx])}
+                  </p>
+                </BoxSelector>
+              ))}
             </div>
-            {/* Post Slider */}
-            <div className="mt-8">
+
+            <div className="mt-10">
+              <label
+                htmlFor="postsRange"
+                className="block text-gray-700 font-semibold mb-3"
+              >
+                Posts Per Week
+              </label>
               <div className="flex items-center justify-between mb-2">
-                <span className="font-medium text-gray-700">Posts Per Week</span>
-                <span className="font-semibold text-blue-600">{postValue}</span>
+                <span className="text-gray-500 text-sm font-medium">1</span>
+                <span className="text-blue-600 font-semibold text-lg">
+                  {postValue}
+                </span>
+                <span className="text-gray-500 text-sm font-medium">7</span>
               </div>
               <input
+                id="postsRange"
                 type="range"
                 min={1}
                 max={7}
-                value={postValue ?? 1}
+                value={postValue}
                 onChange={(e) => setPostValue(Number(e.target.value))}
+                className="w-full accent-blue-600 cursor-pointer"
               />
-              <div className="flex items-center justify-between text-xs text-gray-400 mt-1">
-                <span>1</span>
-                <span>7</span>
+            </div>
+
+            <div className="bg-gray-900 text-white rounded-xl p-8 space-y-6 shadow-lg">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-xl font-semibold tracking-wide">
+                    Your Estimated Monthly Price
+                  </h2>
+                  <p className="text-sm text-gray-300 mt-1">
+                    Based on your selections
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span className="text-3xl font-semibold tracking-tight">
+                    {getCurrencySymbol()}
+                    {currency === "USD"
+                      ? finalPrice
+                      : Math.round(finalPrice * USD_TO_ZAR)}
+                  </span>
+                  <p className="text-xs text-gray-400 mt-1">{contractLength}</p>
+                </div>
               </div>
+              <CustomButton
+                onClick={() => setModalOpen(true)}
+                className="w-full py-3 text-lg font-semibold bg-blue-600 hover:bg-blue-700 transition-colors rounded-lg"
+              >
+                Get Your Quote
+              </CustomButton>
             </div>
           </Box>
-          {/* Results Box */}
-         <div className="flex flex-col w-full h-auto p-4 gap-4 bg-[#0D0D0D] text-white rounded-xl">
-            <div className="flex items-center justify-between w-full">
-              <div className="flex flex-col gap-1.5">
-                <h1 className="font-medium">Your Estimated Monthly Price</h1>
-                <h1 className="opacity-50">Base on your selections</h1>
-              </div>
-              <div className="flex flex-col items-end gap-1.5">
-                <span className="text-4xl">
-                  {getCurrencySymbol()}{currency === "USD" ? finalPrice : Math.round(finalPrice * USD_TO_ZAR)}
-                </span>
-                <h1 className="opacity-50 text-[12px]">
-                  {contractLength ?? ""}
-                </h1>
-              </div>
-            </div>
-            <CustomButton>Get Your Quote</CustomButton>
-          </div>
         </section>
+
+        <QuoteModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+          <h2 className="text-xl font-bold mb-4">Quote Summary</h2>
+
+          <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+            <section>
+              <h3 className="font-semibold mb-2">
+                Platforms (×{postValue} posts/week)
+              </h3>
+              {platformDetails.length === 0 && (
+                <p className="text-gray-500">No platforms selected</p>
+              )}
+              <ul className="list-disc list-inside">
+                {platformDetails.map(({ name, unitPrice, totalPrice }) => (
+                  <li key={name} className="flex justify-between">
+                    <span>{name}</span>
+                    <span>
+                      {getCurrencySymbol()}
+                      {convertPrice(unitPrice)} × {postValue} ={" "}
+                      {getCurrencySymbol()}
+                      {convertPrice(totalPrice)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section>
+              <h3 className="font-semibold mb-2">Strategy & Reporting</h3>
+              {strategyDetails.length === 0 && (
+                <p className="text-gray-500">No strategies selected</p>
+              )}
+              <ul className="list-disc list-inside">
+                {strategyDetails.map(({ name, price }) => (
+                  <li key={name} className="flex justify-between">
+                    <span>{name}</span>
+                    <span>
+                      {getCurrencySymbol()}
+                      {convertPrice(price)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section>
+              <h3 className="font-semibold mb-2">Content Creation</h3>
+              {contentDetails.length === 0 && (
+                <p className="text-gray-500">No content selected</p>
+              )}
+              <ul className="list-disc list-inside">
+                {contentDetails.map(({ name, price }) => (
+                  <li key={name} className="flex justify-between">
+                    <span>{name}</span>
+                    <span>
+                      {getCurrencySymbol()}
+                      {convertPrice(price)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section>
+              <h3 className="font-semibold mb-2">Community Management</h3>
+              <div className="flex justify-between">
+                <span>{communityDetail.name}</span>
+                <span>
+                  {getCurrencySymbol()}
+                  {convertPrice(communityDetail.price)}
+                </span>
+              </div>
+            </section>
+
+            <section>
+              <h3 className="font-semibold mb-2">Contract Length</h3>
+              <p>{discountText}</p>
+            </section>
+
+            <section className="pt-4 border-t mt-4 flex justify-between items-center font-semibold text-lg">
+              <span>Total Estimated Price:</span>
+              <span>
+                {getCurrencySymbol()}
+                {currency === "USD"
+                  ? finalPrice
+                  : Math.round(finalPrice * USD_TO_ZAR)}
+              </span>
+            </section>
+          </div>
+        </QuoteModal>
       </main>
     </div>
   );
 }
 
 export default Calculator;
+
+// <form className="space-y-4">
+//     <div>
+//       <label className="block text-sm font-medium text-gray-700 mb-1">
+//         Your Name
+//       </label>
+//       <input
+//         type="text"
+//         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+//         placeholder="John Doe"
+//         required
+//       />
+//     </div>
+
+//     <div>
+//       <label className="block text-sm font-medium text-gray-700 mb-1">
+//         Email Address
+//       </label>
+//       <input
+//         type="email"
+//         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+//         placeholder="john@example.com"
+//         required
+//       />
+//     </div>
+
+//     <div>
+//       <label className="block text-sm font-medium text-gray-700 mb-1">
+//         Message
+//       </label>
+//       <textarea
+//         className="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+//         rows={4}
+//         placeholder="Let us know what you're looking for..."
+//         required
+//       ></textarea>
+//     </div>
+
+//     <div className="flex justify-end gap-4 pt-4">
+//       <button
+//         type="button"
+//         onClick={() => setConsultationModalOpen(false)}
+//         className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+//       >
+//         Cancel
+//       </button>
+//       <button
+//         type="submit"
+//         className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+//       >
+//         Send Request
+//       </button>
+//     </div>
+//   </form>
