@@ -1,5 +1,5 @@
 // Refactored Calculator Component with cleaner UI and Apple-inspired premium styling
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Box } from "../components/box";
 import { BoxSelector } from "../components/BoxSelector";
 import { CustomButton } from "../components/CustomButton";
@@ -16,6 +16,7 @@ import {
 import { QuoteModal } from "../components/QuoteModal";
 import { QuoteSection } from "../components/QuoteSection";
 import { QuoteButton } from "../components/QuoteButton";
+import emailjs from "@emailjs/browser";
 
 function Calculator() {
   const [selectedContractLength, setContractLengthIndex] = useState<
@@ -170,9 +171,9 @@ function Calculator() {
     setConsultationModalOpen(true); // Open consultation modal
   }
 
-  function handleModifyQuote() {
-    setModalOpen(false);
-  }
+  // function handleModifyQuote() {
+  //   setModalOpen(false);
+  // }
 
   const platformIcons: Record<string, JSX.Element> = {
     Facebook: <FaFacebookF className="text-blue-600" size={24} />,
@@ -182,6 +183,29 @@ function Calculator() {
     TikTok: <FaTiktok className="text-black" size={24} />,
     Pinterest: <FaPinterestP className="text-red-500" size={24} />,
   };
+
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  function sendEmail(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (!formRef.current) return;
+
+    emailjs.sendForm(serviceId, templateId, formRef.current, publicKey).then(
+      () => {
+        alert("Message sent successfully!");
+        setConsultationModalOpen(false);
+        formRef.current?.reset();
+      },
+      (error) => {
+        console.error("EmailJS Error:", error);
+        alert("Failed to send message. Please try again later.");
+      }
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] pt-5 font-sans">
@@ -541,13 +565,14 @@ function Calculator() {
             <h2 className="text-xl font-semibold mb-4">
               Request a Consultation
             </h2>
-            <form className="space-y-4">
+            <form ref={formRef} onSubmit={sendEmail} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Your Name
                 </label>
                 <input
                   type="text"
+                  name="user_name"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="John Doe"
                   required
@@ -560,6 +585,7 @@ function Calculator() {
                 </label>
                 <input
                   type="email"
+                  name="user_email"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="john@example.com"
                   required
@@ -571,6 +597,7 @@ function Calculator() {
                   Message
                 </label>
                 <textarea
+                  name="message"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                   rows={4}
                   placeholder="Let us know what you're looking for..."
