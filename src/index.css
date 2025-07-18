@@ -6,6 +6,10 @@ body {
   font-family: 'DM Sans', sans-serif;
 }
 
+.quote-modal::-webkit-scrollbar {
+  display: none;
+}
+
 
 /* Custom checkbox styles */
 input[type="checkbox"] {

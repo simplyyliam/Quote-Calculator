@@ -14,6 +14,8 @@ import {
   FaPinterestP,
 } from "react-icons/fa";
 import { QuoteModal } from "../components/QuoteModal";
+import { QuoteSection } from "../components/QuoteSection";
+import { QuoteButton } from "../components/QuoteButton";
 
 function Calculator() {
   const [selectedContractLength, setContractLengthIndex] = useState<
@@ -34,6 +36,9 @@ function Calculator() {
   const [finalPrice, setFinalPrice] = useState<number>(0);
   const [currency, setCurrency] = useState<"USD" | "ZAR">("USD");
   const [isModalOpen, setModalOpen] = useState(false);
+  const [subtotal, setSubtotal] = useState<number>(0);
+  const [discountAmount, setDiscountAmount] = useState<number>(0);
+
   const [isConsultationModalOpen, setConsultationModalOpen] = useState(false);
 
   const USD_TO_ZAR = 18.5;
@@ -91,20 +96,25 @@ function Calculator() {
     total += getPriceMap.community[communityManagement] || 0;
     total *= postValue;
 
-    switch (selectedContractLength) {
-      case 1:
-        total *= 0.9;
-        setContractLength("10% discount");
-        break;
-      case 2:
-        total *= 0.8;
-        setContractLength("20% discount");
-        break;
-      default:
-        setContractLength("No discount");
+    const baseTotal = total;
+    let discountMultiplier = 1;
+    let discountLabel = "No discount";
+
+    if (selectedContractLength === 1) {
+      discountMultiplier = 0.9;
+      discountLabel = "10%";
+    } else if (selectedContractLength === 2) {
+      discountMultiplier = 0.8;
+      discountLabel = "20%";
     }
 
-    setFinalPrice(Math.round(total));
+    const final = Math.round(baseTotal * discountMultiplier);
+    const discountVal = Math.round(baseTotal - final);
+
+    setSubtotal(Math.round(baseTotal));
+    setDiscountAmount(discountVal);
+    setContractLength(discountLabel);
+    setFinalPrice(final);
   }, [
     getPriceMap.community,
     getPriceMap.content,
@@ -153,16 +163,16 @@ function Calculator() {
     price: getPriceMap.community[communityManagement],
   };
 
-  const discountText = contractLength; // e.g. "10% discount"
+  // const discountText = contractLength; // e.g. "10% discount"
 
-  // function handleRequestConsultation() {
-  //   setModalOpen(false); // Close quote modal
-  //   setConsultationModalOpen(true); // Open consultation modal
-  // }
+  function handleRequestConsultation() {
+    setModalOpen(false); // Close quote modal
+    setConsultationModalOpen(true); // Open consultation modal
+  }
 
-  // function handleModifyQuote() {
-  //   setModalOpen(false);
-  // }
+  function handleModifyQuote() {
+    setModalOpen(false);
+  }
 
   const platformIcons: Record<string, JSX.Element> = {
     Facebook: <FaFacebookF className="text-blue-600" size={24} />,
@@ -374,7 +384,9 @@ function Calculator() {
                       ? finalPrice
                       : Math.round(finalPrice * USD_TO_ZAR)}
                   </span>
-                  <p className="text-xs text-gray-400 mt-1">{contractLength}</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {contractLength} discount
+                  </p>
                 </div>
               </div>
               <CustomButton
@@ -387,152 +399,206 @@ function Calculator() {
           </Box>
         </section>
 
-        <QuoteModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-          <h2 className="text-xl font-bold mb-4">Quote Summary</h2>
+        {isModalOpen && (
+          <QuoteModal onClose={() => setModalOpen(false)}>
+            <h2 className="text-xl font-semibold mb-4">Quote Summary</h2>
 
-          <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-            <section>
-              <h3 className="font-semibold mb-2">
-                Platforms (×{postValue} posts/week)
-              </h3>
-              {platformDetails.length === 0 && (
-                <p className="text-gray-500">No platforms selected</p>
-              )}
-              <ul className="list-disc list-inside">
-                {platformDetails.map(({ name, unitPrice, totalPrice }) => (
-                  <li key={name} className="flex justify-between">
-                    <span>{name}</span>
+            <div className="space-y-4 p-2.5 max-h-[60vh] overflow-y-auto">
+              {/* Platforms */}
+              <QuoteSection>
+                <h3 className="font-medium text-lg mb-2">Platforms</h3>
+                {platformDetails.length === 0 && (
+                  <p className="text-black/35">No platforms selected</p>
+                )}
+                <ul className="list-disc list-inside">
+                  {platformDetails.map(({ name, unitPrice, totalPrice }) => (
+                    <li
+                      key={name}
+                      className="flex justify-between text-[14px] "
+                    >
+                      <div className="flex gap-2 text-black/50">
+                        <span className="gap-3">{name} -</span>
+                        <span>
+                          {convertPrice(unitPrice)} × {postValue} post/week
+                        </span>
+                      </div>
+                      <span className="text-[16px]">
+                        {getCurrencySymbol()}
+                        {convertPrice(totalPrice)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </QuoteSection>
+
+              {/* Strategies */}
+              <QuoteSection>
+                <h3 className="font-medium text-lg mb-2">
+                  Strategy & Reporting
+                </h3>
+                {strategyDetails.length === 0 && (
+                  <p className="text-gray-500">No strategies selected</p>
+                )}
+                <ul className="list-disc list-inside">
+                  {strategyDetails.map(({ name, price }) => (
+                    <li key={name} className="flex justify-between text-[14px]">
+                      <span className="text-black/50">{name}</span>
+                      <span className="text-[16px]">
+                        {getCurrencySymbol()}
+                        {convertPrice(price)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </QuoteSection>
+
+              {/* Content Creation */}
+              <QuoteSection>
+                <h3 className="font-medium text-lg mb-2">Content Creation</h3>
+                {contentDetails.length === 0 && (
+                  <p className="text-gray-500">No content selected</p>
+                )}
+                <ul className="list-disc list-inside">
+                  {contentDetails.map(({ name, price }) => (
+                    <li key={name} className="flex justify-between text-[14px]">
+                      <span className="text-black/50">{name}</span>
+                      <span className="text-[16px]">
+                        {getCurrencySymbol()}
+                        {convertPrice(price)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </QuoteSection>
+
+              {/* Community Management */}
+              <QuoteSection>
+                <h3 className="font-medium text-lg mb-2">
+                  Community Management
+                </h3>
+                <div className="flex justify-between">
+                  <span className="text-[14px] text-black/50">
+                    {communityDetail.name}
+                  </span>
+                  <span className="text-[16px]">
+                    {getCurrencySymbol()}
+                    {convertPrice(communityDetail.price)}
+                  </span>
+                </div>
+              </QuoteSection>
+
+              {/* Footer */}
+              <QuoteSection className="pt-4 border-t-1 border-black/10 mt-4 flex flex-col font-semibold text-xl">
+                <div className="flex flex-col font-medium text text-[14px] text-black/50">
+                  <span className="flex items-center justify-between py-2.5">
+                    <span>Subtotal</span>
                     <span>
                       {getCurrencySymbol()}
-                      {convertPrice(unitPrice)} × {postValue} ={" "}
-                      {getCurrencySymbol()}
-                      {convertPrice(totalPrice)}
+                      {currency === "USD"
+                        ? subtotal
+                        : Math.round(subtotal * USD_TO_ZAR)}
                     </span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <section>
-              <h3 className="font-semibold mb-2">Strategy & Reporting</h3>
-              {strategyDetails.length === 0 && (
-                <p className="text-gray-500">No strategies selected</p>
-              )}
-              <ul className="list-disc list-inside">
-                {strategyDetails.map(({ name, price }) => (
-                  <li key={name} className="flex justify-between">
-                    <span>{name}</span>
+                  </span>
+                  <span className="flex items-center justify-between py-2.5">
+                    <span>Discount</span>
+                    <span className="text-red-500">
+                      -{getCurrencySymbol()}
+                      {currency === "USD"
+                        ? discountAmount
+                        : Math.round(discountAmount * USD_TO_ZAR)}
+                    </span>
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center justify-between py-2.5">
+                    <span>Monthly Total:</span>
                     <span>
                       {getCurrencySymbol()}
-                      {convertPrice(price)}
+                      {currency === "USD"
+                        ? finalPrice
+                        : Math.round(finalPrice * USD_TO_ZAR)}
                     </span>
-                  </li>
-                ))}
-              </ul>
-            </section>
+                  </div>
+                  <div className="flex items-center justify-between gap-4">
+                    <QuoteButton
+                      onClick={handleRequestConsultation}
+                      className="bg-[#608ff5] text-white"
+                    >
+                      Request Consultant
+                    </QuoteButton>
+                    <QuoteButton onClick={() => setModalOpen(false)}>
+                      Modify Quote
+                    </QuoteButton>
+                  </div>
+                </div>
+              </QuoteSection>
+            </div>
+          </QuoteModal>
+        )}
 
-            <section>
-              <h3 className="font-semibold mb-2">Content Creation</h3>
-              {contentDetails.length === 0 && (
-                <p className="text-gray-500">No content selected</p>
-              )}
-              <ul className="list-disc list-inside">
-                {contentDetails.map(({ name, price }) => (
-                  <li key={name} className="flex justify-between">
-                    <span>{name}</span>
-                    <span>
-                      {getCurrencySymbol()}
-                      {convertPrice(price)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <section>
-              <h3 className="font-semibold mb-2">Community Management</h3>
-              <div className="flex justify-between">
-                <span>{communityDetail.name}</span>
-                <span>
-                  {getCurrencySymbol()}
-                  {convertPrice(communityDetail.price)}
-                </span>
+        {isConsultationModalOpen && (
+          <QuoteModal onClose={() => setConsultationModalOpen(false)}>
+            <h2 className="text-xl font-semibold mb-4">
+              Request a Consultation
+            </h2>
+            <form className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="John Doe"
+                  required
+                />
               </div>
-            </section>
 
-            <section>
-              <h3 className="font-semibold mb-2">Contract Length</h3>
-              <p>{discountText}</p>
-            </section>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="john@example.com"
+                  required
+                />
+              </div>
 
-            <section className="pt-4 border-t mt-4 flex justify-between items-center font-semibold text-lg">
-              <span>Total Estimated Price:</span>
-              <span>
-                {getCurrencySymbol()}
-                {currency === "USD"
-                  ? finalPrice
-                  : Math.round(finalPrice * USD_TO_ZAR)}
-              </span>
-            </section>
-          </div>
-        </QuoteModal>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Message
+                </label>
+                <textarea
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  rows={4}
+                  placeholder="Let us know what you're looking for..."
+                  required
+                ></textarea>
+              </div>
+
+              <div className="flex justify-end gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setConsultationModalOpen(false)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                >
+                  Send Request
+                </button>
+              </div>
+            </form>
+          </QuoteModal>
+        )}
       </main>
     </div>
   );
 }
 
 export default Calculator;
-
-// <form className="space-y-4">
-//     <div>
-//       <label className="block text-sm font-medium text-gray-700 mb-1">
-//         Your Name
-//       </label>
-//       <input
-//         type="text"
-//         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-//         placeholder="John Doe"
-//         required
-//       />
-//     </div>
-
-//     <div>
-//       <label className="block text-sm font-medium text-gray-700 mb-1">
-//         Email Address
-//       </label>
-//       <input
-//         type="email"
-//         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-//         placeholder="john@example.com"
-//         required
-//       />
-//     </div>
-
-//     <div>
-//       <label className="block text-sm font-medium text-gray-700 mb-1">
-//         Message
-//       </label>
-//       <textarea
-//         className="w-full px-4 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-//         rows={4}
-//         placeholder="Let us know what you're looking for..."
-//         required
-//       ></textarea>
-//     </div>
-
-//     <div className="flex justify-end gap-4 pt-4">
-//       <button
-//         type="button"
-//         onClick={() => setConsultationModalOpen(false)}
-//         className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
-//       >
-//         Cancel
-//       </button>
-//       <button
-//         type="submit"
-//         className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-//       >
-//         Send Request
-//       </button>
-//     </div>
-//   </form>
