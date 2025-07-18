@@ -1,4 +1,6 @@
 // Refactored Calculator Component with cleaner UI and Apple-inspired premium styling
+import React from "react";
+
 import { useEffect, useState, useCallback, useRef } from "react";
 import { Box } from "../components/box";
 import { BoxSelector } from "../components/BoxSelector";
@@ -175,14 +177,14 @@ function Calculator() {
   //   setModalOpen(false);
   // }
 
-  const platformIcons: Record<string, JSX.Element> = {
-    Facebook: <FaFacebookF className="text-blue-600" size={24} />,
-    Instagram: <FaInstagram className="text-pink-500" size={24} />,
-    YouTube: <FaYoutube className="text-red-600" size={24} />,
-    LinkedIn: <FaLinkedinIn className="text-blue-700" size={24} />,
-    TikTok: <FaTiktok className="text-black" size={24} />,
-    Pinterest: <FaPinterestP className="text-red-500" size={24} />,
-  };
+const platformIcons: Record<string, React.ReactElement> = {
+  Facebook: <FaFacebookF className="text-blue-600" size={24} />,
+  Instagram: <FaInstagram className="text-pink-500" size={24} />,
+  YouTube: <FaYoutube className="text-red-600" size={24} />,
+  LinkedIn: <FaLinkedinIn className="text-blue-700" size={24} />,
+  TikTok: <FaTiktok className="text-black" size={24} />,
+  Pinterest: <FaPinterestP className="text-red-500" size={24} />,
+};
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
