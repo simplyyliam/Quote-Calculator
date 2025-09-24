@@ -1,9 +1,14 @@
+  
 import { Meta } from "../lib";
+import { useStepper } from "../store";
 import { LightBulb, PlusSign, MinusSign } from "./Icons";
 import { SectionWrapper, Card, CardIcon } from "./ui";
 import { Text } from "./ui/typography";
 
 function LeftColumn() {
+
+  const { initialValue, increment, decrement } = useStepper()
+    
   return (
     <SectionWrapper className="flex-col gap-4">
       {Meta.filter((m) => m.id === 3).map((m) => (
@@ -44,13 +49,17 @@ function LeftColumn() {
             </div>
           </div>
           <div className="flex items-center justify-between w-full px-25 py-2.5">
-            <button className="flex items-center justify-center p-5 w-[78px] h-[78px] hover:bg-neutral-100 transition-all ease-linear cursor-pointer rounded-2xl">
+            <button className="flex items-center justify-center p-5 w-[78px] h-[78px] hover:bg-neutral-100 transition-all ease-linear cursor-pointer rounded-2xl"
+            onClick={increment}
+            >
               {<PlusSign size={36} className={""} />}
             </button>
             <span className="flex items-center justify-center text-5xl p-5 w-[78px] h-[78px]">
-              2
+              {initialValue}
             </span>
-            <button className="flex items-center justify-center p-5 w-[78px] h-[78px] hover:bg-neutral-100 transition-all ease-linear cursor-pointer rounded-2xl">
+            <button className="flex items-center justify-center p-5 w-[78px] h-[78px] hover:bg-neutral-100 transition-all ease-linear cursor-pointer rounded-2xl"
+            onClick={decrement}
+            >
               <MinusSign size={36} className={""} />
             </button>
           </div>
