@@ -5,10 +5,11 @@ import { cn } from "../../../lib";
 type TextProps = HTMLAttributes<HTMLHeadingElement> & {
   level?: 1 | 2 | 3 | 4;
   opacity?: "100" | "50"
+  weight?: "m" | "sb" | "b" | "r"
   children: ReactNode;
 };
 
-export function Text({ level = 1, opacity = "100",className, children, ...props }: TextProps) {
+export function Text({ level = 1, opacity = "100", weight = "r",className, children, ...props }: TextProps) {
   const Tag = (`h${level}` as keyof JSX.IntrinsicElements) as React.ElementType;
 
   return (
@@ -23,6 +24,12 @@ export function Text({ level = 1, opacity = "100",className, children, ...props 
         //Opacity levels
         opacity === "100" && "opacity-100",
         opacity === "50" && "opacity-50",
+
+        //Font weight
+        weight === "r" && "font-normal",
+        weight === "m" && "font-medium",
+        weight === "sb" && "font-semibold",
+        weight === "b" && "font-bold",
 
         className
       )}

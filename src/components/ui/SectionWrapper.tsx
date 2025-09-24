@@ -6,6 +6,6 @@ export const SectionWrapper: React.FC<HtmlHTMLAttributes<HTMLDivElement>> = ({
     ...props
 }) => {
     return (
-        <div className={`flex w-full h-auto ${className}`}{...props}>{children}</div>
+        <div className={`hide-scrollbar flex w-full overflow-y-auto pb-8 ${className}`}{...props}>{children}</div>
     )
 }

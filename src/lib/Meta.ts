@@ -4,9 +4,9 @@ export const Meta = [
         title: "Strategy & Reposting",
         Subtitle: "Select the type of strategy you want to use",
         options: [
-            {1: "Social Media Strategy"},
-            {2: "Competitor Analysis"},
-            {3: "Monthly Performance Reports"},
+            {id: 1, lable:"Social Media Strategy"},
+            {id: 2, lable:"Competitor Analysis"},
+            {id: 3, lable:"Monthly Performance Reports"},
         ]
     },
     {
@@ -14,9 +14,9 @@ export const Meta = [
         title: "Content Creation",
         Subtitle: "Select what type of content you want",
         options: [
-            {1: "Custom Graphics"},
-            {2: "Copywriting"},
-            {3: "Photography"},
+            {id: 1, lable:"Custom Graphics"},
+            {id: 2, lable:"Copywriting"},
+            {id: 3, lable:"Photography"},
         ]
     },
     {
@@ -24,9 +24,9 @@ export const Meta = [
         title: "Community Management",
         Subtitle: "Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et.",
         options: [
-            {1: "None"},
-            {2: "Standard (2 hours/day"},
-            {3: "Premium (3+ hours/day"},
+            {id: 1, lable: "None"},
+            {id: 2, lable:"Standard (2 hours/day"},
+            {id: 3, lable:"Premium (3+ hours/day"},
         ]
     },
     {
@@ -34,12 +34,12 @@ export const Meta = [
         title: "Platforms",
         Subtitle: "Select the soicla media platforms you prefer to use",
         options: [
-            {1: "Facebook"},
-            {2: "Instagram"},
-            {3: "Youtube"},
-            {4: "Linkdin"},
-            {5: "TikTok"},
-            {6: "Pinterest"},
+            {id: 1, lable:"Facebook"},
+            {id: 2, lable:"Instagram"},
+            {id: 3, lable:"Youtube"},
+            {id: 4, lable:"Linkdin"},
+            {id: 5, lable:"TikTok"},
+            {id: 6, lable:"Pinterest"},
         ]
     },
     {
