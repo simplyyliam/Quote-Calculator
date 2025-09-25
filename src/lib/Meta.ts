@@ -1,50 +1,59 @@
+import { nanoid } from "nanoid"
+
 export const Meta = [
     {
-        id: 0,
+        id: nanoid(),
+        order: 0,
         title: "Strategy & Reposting",
         Subtitle: "Select the type of strategy you want to use",
         options: [
-            {id: 1, lable:"Social Media Strategy"},
-            {id: 2, lable:"Competitor Analysis"},
-            {id: 3, lable:"Monthly Performance Reports"},
-        ]
+            { id: nanoid(), lable: "Social Media Strategy", price: 100 },
+            { id: nanoid(), lable: "Competitor Analysis", price: 80 },
+            { id: nanoid(), lable: "Monthly Performance Reports", price: 70 },
+        ],
     },
     {
-        id: 1,
+        id: nanoid(),
+        order: 1,
         title: "Content Creation",
         Subtitle: "Select what type of content you want",
         options: [
-            {id: 1, lable:"Custom Graphics"},
-            {id: 2, lable:"Copywriting"},
-            {id: 3, lable:"Photography"},
-        ]
+            { id: nanoid(), lable: "Custom Graphics", price: 150 },
+            { id: nanoid(), lable: "Copywriting", price: 120 },
+            { id: nanoid(), lable: "Photography", price: 200 },
+        ],
     },
     {
-        id: 2,
+        id: nanoid(),
+        order: 2,
         title: "Community Management",
-        Subtitle: "Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et.",
+        Subtitle:
+            "Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et.",
         options: [
-            {id: 1, lable: "None"},
-            {id: 2, lable:"Standard (2 hours/day"},
-            {id: 3, lable:"Premium (3+ hours/day"},
-        ]
+            { id: nanoid(), lable: "None", price: 0 },
+            { id: nanoid(), lable: "Standard (2 hours/day)", price: 200 },
+            { id: nanoid(), lable: "Premium (3+ hours/day)", price: 300 },
+        ],
     },
     {
-        id: 3,
+        id: nanoid(),
+        order: 3,
         title: "Platforms",
-        Subtitle: "Select the soicla media platforms you prefer to use",
+        Subtitle: "Select the social media platforms you prefer to use",
         options: [
-            {id: 1, lable:"Facebook"},
-            {id: 2, lable:"Instagram"},
-            {id: 3, lable:"Youtube"},
-            {id: 4, lable:"Linkdin"},
-            {id: 5, lable:"TikTok"},
-            {id: 6, lable:"Pinterest"},
-        ]
+            { id: nanoid(), lable: "Facebook", price: 150 },
+            { id: nanoid(), lable: "Instagram", price: 200 },
+            { id: nanoid(), lable: "Youtube", price: 250 },
+            { id: nanoid(), lable: "LinkedIn", price: 175 },
+            { id: nanoid(), lable: "TikTok", price: 225 },
+            { id: nanoid(), lable: "Pinterest", price: 100 },
+        ],
     },
     {
-        id: 4,
+        id: nanoid(),
+        order: 4,
         title: "Post/week",
         Subtitle: "Select the amount of posts you plan to upload",
+        options: [], // add later
     },
 ]
