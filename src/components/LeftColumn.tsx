@@ -11,7 +11,7 @@ function LeftColumn() {
   return (
     <SectionWrapper className="flex-col gap-4">
       {Meta.filter((m) => m.order === 3).map((m) => (
-        <Card>
+        <Card className="h-[20em]! overflow-hidden">
           <div className="flex items-center w-full px-2.5 py-3.5">
             <div className="flex items-center gap-2">
               <div key={m.id} className="flex flex-col gap-[4px]">
@@ -22,25 +22,27 @@ function LeftColumn() {
               </div>
             </div>
           </div>
-          {m.options?.map((opt) => (
-            <button
-              key={opt.id}
-              onClick={() => getVlaue(opt.id, opt.price)}
-              className={`flex gap-2.5 p-2.5 hover:bg-neutral-100 transition-all ease-linear cursor-pointer 
+          <div className="hide-scrollbar  overflow-y-auto">
+            {m.options?.map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => getVlaue(opt.id, opt.price)}
+                className={`flex w-full gap-2.5 p-2.5 hover:bg-neutral-100 transition-all ease-linear cursor-pointer 
                 ${
                   selected.includes(opt.id)
                     ? "bg-blue-600/15 hover:bg-blue-500/25!"
                     : ""
                 }
                 `}
-            >
-              <CardIcon
-                icon={<LightBulb className="text-slate-500" size={24} />}
-                alt="Strategy & Reposting"
-              />
-              <Text level={2}>{opt.lable}</Text>
-            </button>
-          ))}
+              >
+                <CardIcon
+                  icon={<LightBulb className="text-slate-500" size={24} />}
+                  alt="Strategy & Reposting"
+                />
+                <Text level={2}>{opt.lable}</Text>
+              </button>
+            ))}
+          </div>
         </Card>
       ))}
 

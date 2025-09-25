@@ -3,7 +3,7 @@ import type { HTMLAttributes, JSX, ReactNode } from "react";
 import { cn } from "../../../lib";
 
 type TextProps = HTMLAttributes<HTMLHeadingElement> & {
-  level?: 1 | 2 | 3 | 4;
+  level?: 1 | 2 | 3 | 4 | "xl";
   opacity?: "100" | "50"
   weight?: "m" | "sb" | "b" | "r"
   children: ReactNode;
@@ -21,6 +21,7 @@ export function Text({ level = 1, opacity = "100", weight = "r",className, child
         level === 2 && "text-[16px]",
         level === 3 && "text-[14px]",
         level === 4 && "text-[12px]", 
+        level === "xl" && "text-[32px]", 
         //Opacity levels
         opacity === "100" && "opacity-100",
         opacity === "50" && "opacity-50",
