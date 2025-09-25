@@ -42,7 +42,7 @@ export const Meta = [
         Subtitle: "Select the social media platforms you prefer to use",
         options: [
             { id: nanoid(), lable: "Facebook", price: 150 },
-            { id: nanoid(), lable: "Instagram", price: 200 },
+            { id: nanoid(), lable: "Instagram", price: 220 },
             { id: nanoid(), lable: "Youtube", price: 250 },
             { id: nanoid(), lable: "LinkedIn", price: 175 },
             { id: nanoid(), lable: "TikTok", price: 225 },

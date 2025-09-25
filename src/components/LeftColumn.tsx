@@ -1,11 +1,12 @@
 import { Meta } from "../lib";
-import { useStepper } from "../store";
+import { useCalculator, useStepper } from "../store";
 import { LightBulb, PlusSign, MinusSign } from "./Icons";
 import { SectionWrapper, Card, CardIcon } from "./ui";
 import { Text } from "./ui/typography";
 
 function LeftColumn() {
   const { initialValue, increment, decrement } = useStepper();
+  const { getVlaue, selected } = useCalculator();
 
   return (
     <SectionWrapper className="flex-col gap-4">
@@ -24,7 +25,14 @@ function LeftColumn() {
           {m.options?.map((opt) => (
             <button
               key={opt.id}
-              className="flex gap-2.5 p-2.5 hover:bg-neutral-100 transition-all ease-linear cursor-pointer"
+              onClick={() => getVlaue(opt.id, opt.price)}
+              className={`flex gap-2.5 p-2.5 hover:bg-neutral-100 transition-all ease-linear cursor-pointer 
+                ${
+                  selected.includes(opt.id)
+                    ? "bg-blue-600/15 hover:bg-blue-500/25!"
+                    : ""
+                }
+                `}
             >
               <CardIcon
                 icon={<LightBulb className="text-slate-500" size={24} />}

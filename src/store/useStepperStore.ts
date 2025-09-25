@@ -1,26 +1,29 @@
 import { create } from "zustand";
 
-
 type StepperStore = {
     initialValue: number,
     increment: () => void,
-    decrement: () => void
+    decrement: () => void,
 }
 
 export const useStepper = create<StepperStore>((set, get) => ({
-    initialValue: 0,
+    initialValue: 1,
     increment: () => {
         const { initialValue } = get()
         if (initialValue >= 7) {
-            return initialValue 
+            return initialValue
         }
-        set({ initialValue: initialValue + 1 })
+        const newStep = initialValue + 1
+        set({initialValue: newStep})
+     
     },
     decrement: () => {
         const { initialValue } = get()
-        if (initialValue <= 0) {
+        if (initialValue <= 1) {
             return initialValue
         }
-        set({ initialValue: initialValue - 1 })
-    }
+        const newStep = initialValue - 1
+        set({initialValue: newStep})
+ 
+    },
 }))
