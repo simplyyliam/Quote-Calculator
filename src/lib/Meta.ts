@@ -1,3 +1,6 @@
+
+
+import { FacebookIcon, InstagramIcon, YouTubeIcon, Linkdin, TikTokIcon, PinterestIcon } from './../components/Icons';
 import { nanoid } from "nanoid"
 
 export const Meta = [
@@ -41,13 +44,14 @@ export const Meta = [
         title: "Platforms",
         Subtitle: "Select the social media platforms you prefer to use",
         options: [
-            { id: nanoid(), lable: "Facebook", price: 150 },
-            { id: nanoid(), lable: "Instagram", price: 220 },
-            { id: nanoid(), lable: "Youtube", price: 250 },
-            { id: nanoid(), lable: "LinkedIn", price: 175 },
-            { id: nanoid(), lable: "TikTok", price: 225 },
-            { id: nanoid(), lable: "Pinterest", price: 100 },
-        ],
+            { id: nanoid(), lable: "Facebook", price: 150, icon: FacebookIcon },
+            { id: nanoid(), lable: "Instagram", price: 220, icon: InstagramIcon },
+            { id: nanoid(), lable: "Youtube", price: 250, icon: YouTubeIcon },
+            { id: nanoid(), lable: "LinkedIn", price: 175, icon: Linkdin },
+            { id: nanoid(), lable: "TikTok", price: 225, icon: TikTokIcon },
+            { id: nanoid(), lable: "Pinterest", price: 100, icon: PinterestIcon },
+        ]
+
     },
     {
         id: nanoid(),

@@ -1,7 +1,7 @@
 import { Meta } from "../lib";
 import { useCalculator, useStepper } from "../store";
-import { LightBulb, PlusSign, MinusSign } from "./Icons";
-import { SectionWrapper, Card, CardIcon } from "./ui";
+import { PlusSign, MinusSign } from "./Icons";
+import { SectionWrapper, Card } from "./ui";
 import { Text } from "./ui/typography";
 
 function LeftColumn() {
@@ -11,7 +11,7 @@ function LeftColumn() {
   return (
     <SectionWrapper className="flex-col gap-4">
       {Meta.filter((m) => m.order === 3).map((m) => (
-        <Card className="h-[20em]! overflow-hidden">
+        <Card className="">
           <div className="flex items-center w-full px-2.5 py-3.5">
             <div className="flex items-center gap-2">
               <div key={m.id} className="flex flex-col gap-[4px]">
@@ -22,12 +22,12 @@ function LeftColumn() {
               </div>
             </div>
           </div>
-          <div className="hide-scrollbar  overflow-y-auto">
+          <div className="hide-scrollbar flex items-center justify-between gap-2 w-full h-full flex-wrap">
             {m.options?.map((opt) => (
               <button
                 key={opt.id}
                 onClick={() => getVlaue(opt.id, opt.price)}
-                className={`flex w-full gap-2.5 p-2.5 hover:bg-neutral-100 transition-all ease-linear cursor-pointer 
+                className={`flex items-center justify-center w-[137px] h-[137px] px-10 py-[15px] gap-2.5 p-2.5 hover:bg-neutral-100 transition-all ease-linear cursor-pointer 
                 ${
                   selected.includes(opt.id)
                     ? "bg-blue-600/15 hover:bg-blue-500/25!"
@@ -35,11 +35,10 @@ function LeftColumn() {
                 }
                 `}
               >
-                <CardIcon
-                  icon={<LightBulb className="text-slate-500" size={24} />}
-                  alt="Strategy & Reposting"
-                />
-                <Text level={2}>{opt.lable}</Text>
+                <div className="flex flex-col items-center ">
+                  <Text level={2}>{opt.lable}</Text>
+                  <span>{opt.price}</span>
+                </div>
               </button>
             ))}
           </div>

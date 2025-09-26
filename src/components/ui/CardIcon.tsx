@@ -1,20 +1,25 @@
-import type { ReactNode } from "react";
+import type { ElementType } from "react";
 
 interface Props {
-  icon: string | ReactNode;
+  icon: string | ElementType;
   alt: string;
 }
 
 function CardIcon({ icon, alt }: Props) {
+  if (typeof icon === "string") {
+    return (
+      <div className="flex items-center justify-center w-[35px] h-[35px] rounded-[6px] relative">
+        <img src={icon} alt={`${alt} Icon`} className="absolute" />
+      </div>
+    );
+  }
+
+  const Icon = icon;
   return (
-    <div className="flex items-center justify-center bg-slate-500/15 w-[35px] h-[35px] rounded-[6px] relative">
-      {typeof icon  === "string" ? (
-        <img src={icon} alt={`${alt} Icon`} className="absolute"/>
-      ) : (
-        icon
-      )}
+    <div className="flex items-center justify-center w-[35px] h-[35px] rounded-[6px] relative">
+      <Icon className="w-5 h-5 absolute" />
     </div>
   );
 }
 
-export default CardIcon;
+export default CardIcon
