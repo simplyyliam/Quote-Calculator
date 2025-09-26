@@ -59,7 +59,7 @@ export const PinterestIcon = ({size = 20, className}) => (
 </svg>
 
 );
-export const Linkdin = ({size = 20, className}) => (
+export const LinkdinIcon = ({size = 20, className}) => (
     <svg width={size} height={size} viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.826904" y="0.653809" width="38" height="38" rx="11.875" fill="#608FF5"/>
 <g clip-path="url(#clip0_150_359)">

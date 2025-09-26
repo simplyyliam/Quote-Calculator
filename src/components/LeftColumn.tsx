@@ -30,14 +30,15 @@ function LeftColumn() {
                 className={`flex items-center justify-center w-[137px] h-[137px] px-10 py-[15px] gap-2.5 p-2.5 hover:bg-neutral-100 transition-all ease-linear cursor-pointer 
                 ${
                   selected.includes(opt.id)
-                    ? "bg-blue-600/15 hover:bg-blue-500/25!"
+                    ? "bg-black/15 hover:bg-black/20 rounded-2xl!"
                     : ""
                 }
                 `}
               >
-                <div className="flex flex-col items-center ">
+                <div className="flex flex-col items-center gap-2">
+                  <span>{opt.icon}</span>
                   <Text level={2}>{opt.lable}</Text>
-                  <span>{opt.price}</span>
+                  <Text level={3} opacity="50" className="bg-black/15 rounded-full px-2">${opt.price}</Text>
                 </div>
               </button>
             ))}
