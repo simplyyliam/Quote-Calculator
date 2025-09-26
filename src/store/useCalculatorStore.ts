@@ -1,31 +1,60 @@
 import { create } from "zustand";
 
 
+type Option = {
+    optionId: string
+    price: number
+}
+
+
+type SelectedItem = {
+    titleId: string,
+    options: Option[]
+}
+
 type CalculatorStore = {
-    //Actions
-    finalValue: number, //Stores the final value of all items
-    getVlaue: (id: string, price: number) => void //Gets the value of individual items
 
     //States
-    selected: string[] //Checks if an item is selected or not
+    finalValue: number, //Stores the final value of all items
+    selectedItems: SelectedItem[]
+
+    //Actions
+    toggleOption: (titleId: string, option: Option) => void
 }
 
 export const useCalculator = create<CalculatorStore>((set) => ({
     finalValue: 0,
-    selected: [],
-    getVlaue(id, price) {
+    selectedItems: [],
+    toggleOption: (titleId, option) =>
         set((s) => {
-            if(s.selected.includes(id)) {
+            let updatedItem = [...s.selectedItems]
+            const item = updatedItem.find((i) => i.titleId === titleId)
+
+            if (!item) {
+                updatedItem.push({ titleId, options: [option] })
                 return {
-                    selected: s.selected.filter((x) => x !== id), //This checks whether an id is included inside the selected array. If it is, then filter it out since it has been already selected if clicked again.
-                    finalValue: s.finalValue - price
+                    selectedItems: updatedItem,
+                    finalValue: s.finalValue + option.price
                 }
             }
 
-            return {
-                selected: [...s.selected, id], //This method spreads out all the previous selected items + the new selected items.
-                finalValue: s.finalValue + price
+
+            const optionExists = item.options.find((i) => i.optionId === option.optionId)
+            if (optionExists) {
+                item.options = item.options.filter((i) => i.optionId !== option.optionId)
+                if (item.options.length === 0) {
+                    updatedItem = updatedItem.filter((i) => i.titleId !== titleId)
+                }
+                return {
+                    selectedItems: updatedItem,
+                    finalValue: s.finalValue - option.price
+                }
+            } else {
+                item.options.push(option)
+                return {
+                    selectedItems: updatedItem,
+                    finalValue: s.finalValue + option.price
+                }
             }
-        })
-    },
+        }),
 }))
