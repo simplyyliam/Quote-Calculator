@@ -5,7 +5,7 @@ import { Text } from "./ui/typography";
 
 function RightColumn() {
   const { toggleOption, selectedItems } = useCalculator();
-
+  console.log(selectedItems)
   return (
     <SectionWrapper className="flex-col gap-4">
       {Meta.filter((m) => m.order <= 2).map((m) => (

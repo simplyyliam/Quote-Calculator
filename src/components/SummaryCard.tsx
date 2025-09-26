@@ -4,10 +4,15 @@ import { Text } from "./ui/typography";
 import { gsap } from "gsap";
 import { useCalculator } from "../store";
 
-export default function SummaryCard() {
+
+interface props {
+  onclick: () => void
+}
+
+export default function SummaryCard({onclick}:props) {
   const { total } = useTotal();
   const { finalValue } = useCalculator();
-  const SummaryCardRef = useRef<HTMLDivElement>(null);
+  const SummaryCardRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const card = SummaryCardRef.current;
@@ -31,7 +36,8 @@ export default function SummaryCard() {
   }, [finalValue]);
 
   return (
-    <div
+    <button
+    onClick={onclick}
       ref={SummaryCardRef}
       className="flex items-center justify-between p-2 rounded-[20px] bg-black text-white absolute bottom-10 opacity-0 scale-0"
     >
@@ -47,6 +53,6 @@ export default function SummaryCard() {
           10% Discount applied
         </Text>
       </div>
-    </div>
+    </button>
   );
 }
