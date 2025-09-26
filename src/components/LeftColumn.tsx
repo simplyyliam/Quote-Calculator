@@ -64,7 +64,7 @@ function LeftColumn() {
               className="flex items-center justify-center p-5 w-[78px] h-[78px] hover:bg-neutral-100 transition-all ease-linear cursor-pointer rounded-2xl"
               onClick={increment}
             >
-              {<PlusSign size={36} className={""} />}
+              {<PlusSign size={36}/>}
             </button>
             <span className="flex items-center justify-center text-5xl p-5 w-[78px] h-[78px]">
               {initialValue}
@@ -73,7 +73,7 @@ function LeftColumn() {
               className="flex items-center justify-center p-5 w-[78px] h-[78px] hover:bg-neutral-100 transition-all ease-linear cursor-pointer rounded-2xl"
               onClick={decrement}
             >
-              <MinusSign size={36} className={""} />
+              <MinusSign size={36}/>
             </button>
           </div>
         </Card>
