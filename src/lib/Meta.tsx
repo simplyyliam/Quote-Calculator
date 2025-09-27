@@ -53,7 +53,6 @@ export const Meta: Meta[] = [
     title: "Community Management",
     Subtitle: "Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et.",
     options: [
-      { id: nanoid(), lable: "None", price: 0 },
       { id: nanoid(), lable: "Standard (2 hours/day)", price: 200 },
       { id: nanoid(), lable: "Premium (3+ hours/day)", price: 300 },
     ],
