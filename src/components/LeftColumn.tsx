@@ -27,15 +27,15 @@ function LeftColumn() {
               // Check if option is selected
               const isSelected = selectedItems.some(
                 (item) =>
-                  item.titleId === m.id &&
-                  item.options.some((o) => o.optionId === opt.id)
+                  item.titleId === m.title &&
+                  item.options.some((o) => o.optionId === opt.lable)
               );
 
               return (
                 <button
                   key={opt.id}
                   onClick={() =>
-                    toggleOption(m.id, { optionId: opt.id, price: opt.price })
+                    toggleOption(m.title, { optionId: opt.lable, price: opt.price })
                   }
                   className={`flex items-center justify-center w-[137px] h-[137px] px-10 py-[15px] gap-2.5 p-2.5 hover:bg-neutral-100 transition-all ease-linear cursor-pointer 
                     ${isSelected ? "bg-black/15 hover:bg-black/20 rounded-2xl!" : ""}

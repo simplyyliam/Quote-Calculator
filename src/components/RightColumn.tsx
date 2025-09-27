@@ -28,8 +28,8 @@ function RightColumn() {
           {m.options?.map((opt) => {
             const isSelected = selectedItems.some(
               (item) =>
-                item.titleId === m.id &&
-                item.options.some((o) => o.optionId === opt.id)
+                item.titleId === m.title &&
+                item.options.some((o) => o.optionId === opt.lable)
             );
 
             return (
@@ -41,7 +41,7 @@ function RightColumn() {
                   type="checkbox"
                   checked={isSelected}
                   onChange={() =>
-                    toggleOption(m.id, { optionId: opt.id, price: opt.price })
+                    toggleOption(m.title, { optionId: opt.lable, price: opt.price })
                   }
                   name={`m-${opt.id}`}
                   value={opt.lable}
