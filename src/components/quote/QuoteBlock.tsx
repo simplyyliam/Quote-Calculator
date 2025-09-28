@@ -7,7 +7,7 @@ export default function QuoteBlock() {
   return (
     // Card
     <>
-      <div className="flex flex-col w-full p-[15px] gap-2.5">
+      <div className="hide-scrollbar flex flex-col w-full h-full  p-[15px] gap-10 overflow-hidden overflow-y-auto">
         {/* Header */}
         {selectedItems.map((items) => (
           <div className="flex flex-col gap-2.5">
@@ -37,7 +37,6 @@ export default function QuoteBlock() {
             </div>
           </div>
         ))}
-
       </div>
     </>
   );
