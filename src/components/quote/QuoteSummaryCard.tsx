@@ -1,13 +1,13 @@
 import { useTotal } from "../../hooks";
-import { Card } from "../ui";
+import { Button, Card } from "../ui";
 import { Text } from "../ui/typography";
 
 export default function QuoteSummaryCard() {
-    const { total } = useTotal()
+  const { total } = useTotal();
   return (
-    <Card className="flex flex-col w-full h-auto p-[15px] gap-2.5 bg-white">
+    <Card className="flex flex-col w-full h-auto p-[15px] gap-3">
       <div className="w-full flex-col">
-        <Text level={4} weight="m">
+        <Text level={4} weight="m" className="py-2.5">
           Quote Summary
         </Text>
 
@@ -36,6 +36,13 @@ export default function QuoteSummaryCard() {
         <Text level={4} weight="m">
           ${total}.00
         </Text>
+      </div>
+      <div className="flex items-center justify-center w-full">
+        <Button>
+          <Text level={1} weight="m">
+            Confirm & Generate Quote
+          </Text>
+        </Button>
       </div>
     </Card>
   );

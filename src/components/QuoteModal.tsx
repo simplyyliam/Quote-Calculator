@@ -4,12 +4,10 @@ import { SectionWrapper } from "./ui";
 import HeaderCard from "./quote/HeaderCard";
 import QuoteBlock from "./quote/QuoteBlock";
 import { Text } from "./ui/typography";
-import { useTotal } from "../hooks";
 import { QuoteSummary } from "./quote";
 
 export default function QuoteModal() {
   const QuoteModalRef = useRef<HTMLDivElement | null>(null);
-  const { total } = useTotal();
 
   useEffect(() => {
     const Modal = QuoteModalRef.current;

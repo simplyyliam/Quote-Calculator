@@ -12,14 +12,15 @@ import type { JSX } from "react";
 type Option = {
   id: string;
   lable: string;
-  price: number;
+  price?: number;
+  length?: number;
   icon?: JSX.Element;
 };
 
 type Meta = {
   id: string;
-  order: number
-  title: string
+  order: number;
+  title: string;
   Subtitle: string;
   options: Option[];
 };
@@ -67,37 +68,37 @@ export const Meta: Meta[] = [
         id: nanoid(),
         lable: "Facebook",
         price: 150,
-        icon: <FacebookIcon size={35}/>,
+        icon: <FacebookIcon size={35} />,
       },
       {
         id: nanoid(),
         lable: "Instagram",
         price: 220,
-        icon: <InstagramIcon size={35}/>,
+        icon: <InstagramIcon size={35} />,
       },
       {
         id: nanoid(),
         lable: "Youtube",
         price: 250,
-        icon: <YouTubeIcon size={35}/>,
+        icon: <YouTubeIcon size={35} />,
       },
       {
         id: nanoid(),
         lable: "LinkedIn",
         price: 175,
-        icon: <LinkdinIcon size={35}/>,
+        icon: <LinkdinIcon size={35} />,
       },
       {
         id: nanoid(),
         lable: "TikTok",
         price: 225,
-        icon: <TikTokIcon size={35}/>,
+        icon: <TikTokIcon size={35} />,
       },
       {
         id: nanoid(),
         lable: "Pinterest",
         price: 100,
-        icon: <PinterestIcon size={35}/>,
+        icon: <PinterestIcon size={35} />,
       },
     ],
   },
@@ -107,5 +108,16 @@ export const Meta: Meta[] = [
     title: "Post/week",
     Subtitle: "Select the amount of posts you plan to upload",
     options: [], // add later
+  },
+  {
+    id: nanoid(),
+    order: 5,
+    title: "Contract Length",
+    Subtitle: "Select the your desired contract length.",
+    options: [
+      { id: nanoid(), lable: "Monthly", length: 0 },
+      { id: nanoid(), lable: "3 Months", length: 10 },
+      { id: nanoid(), lable: "6 Months", length: 20 },
+    ],
   },
 ];

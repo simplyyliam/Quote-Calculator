@@ -51,7 +51,7 @@ useEffect(() => {
     <button
       ref={ref}
       className={cn(
-        "p-4 rounded-full w-[217px] h-[54px] cursor-pointer",
+        "p-4 rounded-full w-[217px] h-[70px] cursor-pointer",
         outtline === "no" && "border-none",
         outtline === "yes" && "border-1 border-[#C8C8C8]",
 
