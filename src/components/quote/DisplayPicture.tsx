@@ -1,32 +1,18 @@
-import type { HTMLAttributes, ReactNode } from "react";
-import { cn } from "../../lib";
+interface DisplayPictureProps {
+  src: string;
+  className?: string;
+}
 
-type Config = HTMLAttributes<HTMLDivElement> & {
-  size?: "sm" | "md" | "lg" | "xl";
-  children: ReactNode;
-};
-
-export function DisplayPicture({
-  size = "md",
-  children,
-  className,
-  ...props
-}: Config) {
-
-
+export default function DisplayPicture({ src, className }: DisplayPictureProps) {
   return (
     <div
-      className={cn(
-        size === "sm" && "w-[30px] h-[30px]",
-        size === "md" && "w-[56px] h-[56px]",
-        size === "lg" && "w-[70px] h-[70px]",
-        size === "xl" && "w-[110px] h-[110px]",
-
-        className
-      )}
-      {...props}
+      className={`relative overflow-hidden rounded-2xl bg-slate-50 ${className}`}
     >
-      {children}
+      <img
+        src={src}
+        alt="Display"
+        className="w-full h-full object-cover"
+      />
     </div>
   );
 }

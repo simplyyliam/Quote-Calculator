@@ -7,39 +7,39 @@ export default function QuoteSummaryCard() {
   return (
     <Card className="flex flex-col w-full h-auto p-[15px] gap-3">
       <div className="w-full flex-col">
-        <Text level={4} weight="m" className="py-2.5">
+        <Text weight="m" className="py-2.5 text-[15px]">
           Quote Summary
         </Text>
 
         <div className="flex items-center justify-between">
-          <Text level={3} opacity="50" className="px-2.5 py-1.5">
+          <Text opacity="50" className="px-2.5 py-1.5 text-[12px]">
             Subtotal
           </Text>
-          <Text level={3} weight="m">
+          <Text weight="m" className="text-[12px]">
             ${total}.00
           </Text>
         </div>
         <div className="flex items-center justify-between">
-          <Text level={3} className="px-2.5 py-1.5 text-red-600">
+          <Text className="px-2.5 py-1.5 text-[12px] text-red-600">
             Dicount
           </Text>
-          <Text level={3} className="text-red-600">
+          <Text className="text-red-600 text-[12px]">
             ${total}.00
           </Text>
         </div>
       </div>
       <hr />
       <div className="flex items-center justify-between">
-        <Text level={4} weight="m">
+        <Text weight="m" className="text-[14px]">
           Total
         </Text>
-        <Text level={4} weight="m">
+        <Text weight="m" className="text-[14px]">
           ${total}.00
         </Text>
       </div>
       <div className="flex items-center justify-center w-full">
-        <Button>
-          <Text level={1} weight="m">
+        <Button className="w-[190px] h-[60px]">
+          <Text weight="m" className="text-[10px]">
             Confirm & Generate Quote
           </Text>
         </Button>

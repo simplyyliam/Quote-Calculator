@@ -62,14 +62,14 @@ useEffect(() => {
       className="flex items-center justify-between p-2 rounded-[20px] bg-black text-white cursor-pointer absolute bottom-10 opacity-0 scale-0 invisible pointer-events-none"
     >
       <div className="flex flex-col items-start px-2.5 py-3.5">
-        <Text level={2}>Your Estimated Monthly Summary</Text>
-        <Text level={1} opacity="50">
+        <Text className="text-sm">Your Estimated Monthly Summary</Text>
+        <Text opacity="50" className="text-xs">
           Based on your selections
         </Text>
       </div>
       <div className="flex flex-col text-end px-2.5 py-3.5">
-        <Text level={"xl"}>${total}</Text>
-        <Text level={1} opacity="50">
+        <Text className="text-3xl">${total}</Text>
+        <Text opacity="50" className="text-xs">
           10% Discount applied
         </Text>
       </div>

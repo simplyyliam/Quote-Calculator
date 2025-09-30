@@ -4,7 +4,7 @@ import { PlusSign, MinusSign } from "./Icons";
 import { Card } from "./ui";
 import { Text } from "./ui/typography";
 
-export default function MasonryGrid() {
+export default function QuoteGrid() {
   const { toggleOption, selectedItems } = useCalculator();
   const { initialValue, increment, decrement } = useStepper();
 
@@ -18,12 +18,8 @@ export default function MasonryGrid() {
               {/* Header */}
               <div className="flex items-center w-full px-2.5 py-3.5">
                 <div className="flex flex-col gap-[4px]">
-                  <Text level={2} weight="m">
-                    {m.title}
-                  </Text>
-                  <Text level={3} opacity="50">
-                    {m.Subtitle}
-                  </Text>
+                  <Text weight="m">{m.title}</Text>
+                  <Text opacity="50">{m.Subtitle}</Text>
                 </div>
               </div>
 
@@ -53,7 +49,7 @@ export default function MasonryGrid() {
                           }
                           className="cursor-pointer"
                         />
-                        <Text level={2}>{opt.lable}</Text>
+                        <Text>{opt.lable}</Text>
                       </label>
                     );
                   })}
@@ -84,9 +80,8 @@ export default function MasonryGrid() {
           `}
                       >
                         <span>{opt.icon}</span>
-                        <Text level={2}>{opt.lable}</Text>
+                        <Text>{opt.lable}</Text>
                         <Text
-                          level={3}
                           opacity="50"
                           className="bg-black/15 rounded-full px-2"
                         >

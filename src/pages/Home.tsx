@@ -1,4 +1,4 @@
-import { SummaryCard, QuoteModal, QuoteGrid } from "../components";
+import { SummaryCard, QuoteModal, QuouteGrid,  } from "../components";
 import { SectionWrapper } from "../components/ui";
 import { useToggle } from "../store";
 
@@ -8,7 +8,7 @@ function Home() {
   return (
     <div className="flex flex-col items-center w-full h-full px-4 sm:px-8 md:px-16 lg:px-35 gap-4 sm:gap-6 md:gap-8">
       <SectionWrapper className="w-full max-w-[1400px] gap-4 sm:gap-6 md:gap-8">
-        <QuoteGrid />
+        <QuouteGrid />
       </SectionWrapper>
 
       {/* Summary always centered */}
