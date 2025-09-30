@@ -78,7 +78,7 @@ export default function MasonryGrid() {
                             price: opt.price ?? 0,
                           })
                         }
-                        className={`flex flex-col items-center justify-center gap-2.5 p-4 hover:bg-neutral-100 transition-all ease-linear cursor-pointer
+                        className={`flex flex-col items-center justify-center gap-2.5  hover:bg-black/20 transition-all ease-linear cursor-pointer
             ${isSelected ? "bg-black/15 hover:bg-black/20 rounded-2xl" : ""}
             w-full aspect-square
           `}

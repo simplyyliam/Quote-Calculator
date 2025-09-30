@@ -21,11 +21,12 @@ useEffect(() => {
     if (finalValue > 0) {
       gsap.fromTo(
         card,
-        { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }
+        { opacity: 0, visibility: "hidden", pointerEvents: "none", scale: 0.9 },
+        { opacity: 1, visibility: "visible", pointerEvents: "auto", scale: 1, duration: 0.4, ease: "power3.out" }
       );
     } else {
       gsap.to(card, {
+        visibility: "hidden", pointerEvents: "none",
         opacity: 0,
         scale: 0.8,
         duration: 0.3,
@@ -58,7 +59,7 @@ useEffect(() => {
     <button
       onClick={onclick}
       ref={SummaryCardRef}
-      className="flex items-center justify-between p-2 rounded-[20px] bg-black text-white cursor-pointer absolute bottom-10 opacity-0 scale-0"
+      className="flex items-center justify-between p-2 rounded-[20px] bg-black text-white cursor-pointer absolute bottom-10 opacity-0 scale-0 invisible pointer-events-none"
     >
       <div className="flex flex-col items-start px-2.5 py-3.5">
         <Text level={2}>Your Estimated Monthly Summary</Text>
