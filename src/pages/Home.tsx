@@ -6,7 +6,7 @@ function Home() {
   const { toggle, setToggle } = useToggle();
 
   return (
-    <div className="flex flex-col items-center w-full h-full px-4 sm:px-8 md:px-16 lg:px-35 gap-4 sm:gap-6 md:gap-8">
+  <div className="flex flex-col items-center w-full h-full md:px-16 lg:px-35 gap-4 sm:gap-6 md:gap-8">
       <SectionWrapper className="w-full max-w-[1400px] gap-4 sm:gap-6 md:gap-8">
         <QuouteGrid />
       </SectionWrapper>

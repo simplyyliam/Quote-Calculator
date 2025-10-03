@@ -5,15 +5,50 @@ import { Card } from "./ui";
 import { Text } from "./ui/typography";
 
 export default function QuoteGrid() {
-  const { toggleOption, selectedItems } = useCalculator();
+  const { toggleOption, selectedItems, selectedContract, setContract } = useCalculator();
   const { initialValue, increment, decrement } = useStepper();
+
+  const restMeta = Meta.filter((m) => m.order !== 5); 
+  const contractMeta = Meta.find((m) => m.order === 5); 
 
   return (
     <div className="w-full h-full">
       {/* Scrollable only on small screens */}
-      <div className="h-[calc(100vh-100px)] overflow-y-auto md:overflow-visible pr-2">
+      <div className="h-[calc(100vh-100px)] overflow-y-auto md:overflow-visible prp-2">
         <div className="columns-1 md:columns-2 gap-4 w-full">
-          {Meta.map((m) => (
+           {/* Contract Length first */}
+          {contractMeta && (
+            <Card key={contractMeta.id} className="mb-4 gap-4 break-inside-avoid">
+              <div className="flex items-center w-full px-2.5 py-3.5">
+                <div className="flex flex-col gap-[4px]">
+                  <Text weight="m">{contractMeta.title}</Text>
+                  <Text opacity="50">{contractMeta.Subtitle}</Text>
+                </div>
+              </div>
+
+              <div className="flex gap-2 w-full">
+                {contractMeta.options?.map((opt) => {
+                 const isSelected = selectedContract?.months === opt.months
+
+                  return (
+                    <button
+                      key={opt.id}
+                      onClick={() =>
+                        setContract({months: opt.months?? 0, discount: opt.dicounts?? 0})
+                      } 
+                      className={`flex-1 px-4 py-3 rounded-xl border transition 
+                      ${isSelected ? "bg-black/10 border-black" : "bg-white border-neutral-200"}`}
+                    >
+                      <Text>{opt.lable}</Text>
+                    </button>
+                  );
+                })}
+              </div>
+            </Card>
+          )}
+
+
+          {restMeta.map((m) => (
             <Card key={m.id} className="mb-4 gap-4 break-inside-avoid">
               {/* Header */}
               <div className="flex items-center w-full px-2.5 py-3.5">

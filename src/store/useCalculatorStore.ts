@@ -17,9 +17,11 @@ type CalculatorStore = {
     //States
     finalValue: number, //Stores the final value of all items
     selectedItems: SelectedItem[]
+    selectedContract: {months: number, discount: number} | null
 
     //Actions
     toggleOption: (titleId: string, option: Option) => void
+    setContract: (contract: {months: number, discount: number }) => void
 }
 
 export const useCalculator = create<CalculatorStore>((set) => ({
@@ -57,4 +59,6 @@ export const useCalculator = create<CalculatorStore>((set) => ({
                 }
             }
         }),
+        selectedContract: null,
+        setContract: (contract) => set({selectedContract: contract})
 }))

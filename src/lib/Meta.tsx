@@ -15,6 +15,8 @@ type Option = {
   price?: number;
   length?: number;
   icon?: JSX.Element;
+  months?: number;
+  dicounts?: number
 };
 
 type Meta = {
@@ -115,9 +117,9 @@ export const Meta: Meta[] = [
     title: "Contract Length",
     Subtitle: "Select the your desired contract length.",
     options: [
-      { id: nanoid(), lable: "Monthly", length: 0 },
-      { id: nanoid(), lable: "3 Months", length: 10 },
-      { id: nanoid(), lable: "6 Months", length: 20 },
+      { id: nanoid(), lable: "Monthly", months: 0, dicounts: 0, length: 0 },
+      { id: nanoid(), lable: "3 Months", months: 3, dicounts: 0.1, length: 10 },
+      { id: nanoid(), lable: "6 Months", months: 6, dicounts: 0.2, length: 20 },
     ],
   },
 ];
