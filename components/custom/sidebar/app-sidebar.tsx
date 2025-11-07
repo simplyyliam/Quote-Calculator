@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Sidebar,
   SidebarContent,
@@ -9,21 +11,22 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useActiveItem } from "@/hooks";
+import { Data } from "@/lib/sidebar";
 import { Command } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export default function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const { setActiveItem, activeItem } = useActiveItem()
   return (
     <Sidebar
       collapsible="icon"
       className="overflow-hidden *:data-[sidebar=sidebar]:flex-row"
       {...props}
     >
-      {/* This is the first sidebar */}
-      {/* We disable collapsible and adjust width to icon. */}
-      {/* This will make the sidebar appear as icons. */}
       <Sidebar
         collapsible="none"
         className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r"
@@ -32,15 +35,11 @@ export default function AppSidebar({
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild className="md:h-8 md:p-0">
-                <a href="#">
+                <Link href="#">
                   <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                     <Command className="size-4" />
                   </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">Acme Inc</span>
-                    <span className="truncate text-xs">Enterprise</span>
-                  </div>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -49,24 +48,24 @@ export default function AppSidebar({
           <SidebarGroup>
             <SidebarGroupContent className="px-1.5 md:px-0">
               <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    className="flex items-center justify-center cursor-pointer"
-                  >
-                    H
-                  </SidebarMenuButton>
+                <SidebarMenuItem className="flex flex-col gap-2">
+                  {Data.menu.map((item) => (
+                    <SidebarMenuButton onClick={() => setActiveItem(item.title)} key={item.id} className="flex items-center justify-center cursor-pointer" style={{
+                      backgroundColor: `${item.color}`
+                    }}>
+                      {item.title.charAt(0)}
+                    </SidebarMenuButton>
+                  ))}
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-        </SidebarContent>
+        </SidebarContent> 
         <SidebarFooter>hello</SidebarFooter>
       </Sidebar>
 
-      {/* This is the second sidebar */}
-      {/* We disable collapsible and let it fill remaining space */}
       <Sidebar collapsible="none" className="hidden flex-1 md:flex">
-        <SidebarHeader className="gap-3.5 border-b p-4">header</SidebarHeader>
+        <SidebarHeader className="gap-3.5 border-b p-4">{activeItem}</SidebarHeader>
         <SidebarContent>
           <SidebarGroup className="px-0">
             <SidebarGroupContent>
