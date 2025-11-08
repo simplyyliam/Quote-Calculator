@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   Sidebar,
@@ -20,7 +20,21 @@ import React from "react";
 export default function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const { setActiveItem, activeItem } = useActiveItem()
+  const { setActiveItem, activeItem } = useActiveItem();
+
+  const isActive =
+    activeItem === "Services"
+      ? Data.services.map((s) => (
+          <Link key={s.id} href={s.path}>
+            <SidebarMenuButton className="">{s.lable}</SidebarMenuButton>
+          </Link>
+        ))
+      : Data.Invoices.map((i) => (
+          <Link key={i.id} href={i.path}>
+            <SidebarMenuButton className="">{i.lable}</SidebarMenuButton>
+          </Link>
+        ));
+
   return (
     <Sidebar
       collapsible="icon"
@@ -50,9 +64,16 @@ export default function AppSidebar({
               <SidebarMenu>
                 <SidebarMenuItem className="flex flex-col gap-2">
                   {Data.menu.map((item) => (
-                    <SidebarMenuButton onClick={() => setActiveItem(item.title)} key={item.id} className="flex items-center justify-center cursor-pointer" style={{
-                      backgroundColor: `${item.color}`
-                    }}>
+                    <SidebarMenuButton
+                      onClick={() => setActiveItem(item.title)}
+                      key={item.id}
+                      className="flex items-center justify-center cursor-pointer text-muted-foreground"
+                      style={
+                        {
+                          // backgroundColor: `${item.color}`,
+                        }
+                      }
+                    >
                       {item.title.charAt(0)}
                     </SidebarMenuButton>
                   ))}
@@ -60,16 +81,17 @@ export default function AppSidebar({
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-        </SidebarContent> 
+        </SidebarContent>
         <SidebarFooter>hello</SidebarFooter>
       </Sidebar>
 
       <Sidebar collapsible="none" className="hidden flex-1 md:flex">
-        <SidebarHeader className="gap-3.5 border-b p-4">{activeItem}</SidebarHeader>
+        <SidebarHeader className="gap-3.5 border-b p-3">
+          {activeItem}
+        </SidebarHeader>
         <SidebarContent>
           <SidebarGroup className="px-0">
-            <SidebarGroupContent>
-            </SidebarGroupContent>
+            <SidebarGroupContent>{isActive}</SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
