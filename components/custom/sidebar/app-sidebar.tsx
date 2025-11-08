@@ -12,6 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useActiveItem } from "@/hooks";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Data } from "@/lib/sidebar";
 import { Command } from "lucide-react";
 import Link from "next/link";
@@ -34,6 +35,8 @@ export default function AppSidebar({
             <SidebarMenuButton className="">{i.lable}</SidebarMenuButton>
           </Link>
         ));
+
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
     <Sidebar
@@ -74,7 +77,7 @@ export default function AppSidebar({
                         }
                       }
                     >
-                      {item.title.charAt(0)}
+                      {isMobile ? <>{item.title}</> : <>{item.title.charAt(0)}</> }
                     </SidebarMenuButton>
                   ))}
                 </SidebarMenuItem>
