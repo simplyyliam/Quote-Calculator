@@ -12,7 +12,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <div className="flex flex-col w-full h-full">
         <header className="flex items-center w-full p-2.5">
-          {headerActiveItem}
+          <div className="flex gap-2 items-center">
+            <span className="w-6 h-6 bg-accent rounded-sm" ></span>
+            {headerActiveItem}
+          </div>
         </header>
         <div className="flex w-full h-full">{children}</div>
       </div>

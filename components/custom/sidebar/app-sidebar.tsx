@@ -27,7 +27,13 @@ export default function AppSidebar({
     sidebarActiveItem === "Services"
       ? Data.services.map((s) => (
           <Link key={s.id} href={s.path}>
-            <SidebarMenuButton className="" onClick={() => setHeaderActiveitem(s.lable)}>{s.lable}</SidebarMenuButton>
+            <SidebarMenuButton
+              className=""
+              onClick={() => setHeaderActiveitem(s.lable)}
+            >
+              <span className="w-6 h-6 bg-accent rounded-sm"></span>
+              {s.lable}
+            </SidebarMenuButton>
           </Link>
         ))
       : 0;
