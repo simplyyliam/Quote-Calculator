@@ -4,11 +4,15 @@ import { create } from "zustand"
 
 
 type ActveItem = {
-    activeItem: string | number
+    sidebarActiveItem: string | number
+    headerActiveItem: string | number
     setActiveitem: (data: number | string) => void
+    setHeaderActiveitem: (data: number | string) => void
 }
 
 export const useActiveItemStore = create<ActveItem>((set) => ({
-    activeItem: Data.menu[0].title,
-    setActiveitem: (data) => set({activeItem: data}) 
+    sidebarActiveItem: Data.menu[0].title,
+    headerActiveItem: Data.services[0].lable,
+    setActiveitem: (data) => set({sidebarActiveItem: data}), 
+    setHeaderActiveitem: (data) => set({headerActiveItem: data}) 
 }))

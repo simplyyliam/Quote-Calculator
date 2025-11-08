@@ -16,18 +16,18 @@ import { Data } from "@/lib/sidebar";
 import { useActiveItemStore } from "@/store/ActiveItemStore";
 import { Command } from "lucide-react";
 import Link from "next/link";
-import React from "react";
 
 export default function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const { setActiveitem, activeItem } = useActiveItemStore();
+  const { setActiveitem, sidebarActiveItem, setHeaderActiveitem } =
+    useActiveItemStore();
 
   const isActive =
-    activeItem === "Services"
+    sidebarActiveItem === "Services"
       ? Data.services.map((s) => (
           <Link key={s.id} href={s.path}>
-            <SidebarMenuButton className="">{s.lable}</SidebarMenuButton>
+            <SidebarMenuButton className="" onClick={() => setHeaderActiveitem(s.lable)}>{s.lable}</SidebarMenuButton>
           </Link>
         ))
       : 0;
@@ -73,7 +73,11 @@ export default function AppSidebar({
                         }
                       }
                     >
-                      {isMobile ? <>{item.title}</> : <>{item.title.charAt(0)}</> }
+                      {isMobile ? (
+                        <>{item.title}</>
+                      ) : (
+                        <>{item.title.charAt(0)}</>
+                      )}
                     </SidebarMenuButton>
                   ))}
                 </SidebarMenuItem>
@@ -86,7 +90,7 @@ export default function AppSidebar({
 
       <Sidebar collapsible="none" className="hidden flex-1 md:flex">
         <SidebarHeader className="gap-3.5 border-b p-3">
-          {activeItem}
+          {sidebarActiveItem}
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup className="px-0">
