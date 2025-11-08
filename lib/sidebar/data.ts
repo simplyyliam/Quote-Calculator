@@ -9,9 +9,7 @@ export const Data = {
     services: [
         { id: nanoid(), lable: "Social Media", path: "/services/:id/socials" },
         { id: nanoid(), lable: "Photography", path: "/services/:id/phorography" },
-    ],
-    Invoices: [
         { id: nanoid(), lable: "Invoices Media", path: "/services/:id/invoices" },
         { id: nanoid(), lable: "Photography", path: "/services/:id/phorography" },
-    ]
+    ],
 }

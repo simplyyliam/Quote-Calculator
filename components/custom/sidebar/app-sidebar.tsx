@@ -11,9 +11,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useActiveItem } from "@/hooks";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Data } from "@/lib/sidebar";
+import { useActiveItemStore } from "@/store/ActiveItemStore";
 import { Command } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -21,7 +21,7 @@ import React from "react";
 export default function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const { setActiveItem, activeItem } = useActiveItem();
+  const { setActiveitem, activeItem } = useActiveItemStore();
 
   const isActive =
     activeItem === "Services"
@@ -30,11 +30,7 @@ export default function AppSidebar({
             <SidebarMenuButton className="">{s.lable}</SidebarMenuButton>
           </Link>
         ))
-      : Data.Invoices.map((i) => (
-          <Link key={i.id} href={i.path}>
-            <SidebarMenuButton className="">{i.lable}</SidebarMenuButton>
-          </Link>
-        ));
+      : 0;
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -68,7 +64,7 @@ export default function AppSidebar({
                 <SidebarMenuItem className="flex flex-col gap-2">
                   {Data.menu.map((item) => (
                     <SidebarMenuButton
-                      onClick={() => setActiveItem(item.title)}
+                      onClick={() => setActiveitem(item.title)}
                       key={item.id}
                       className="flex items-center justify-center cursor-pointer text-muted-foreground"
                       style={
