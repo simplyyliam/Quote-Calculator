@@ -17,7 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {headerActiveItem}
           </div>
         </header>
-        <div className="flex w-full h-full">{children}</div>
+        <div className="flex w-full h-full overflow-hidden">{children}</div>
       </div>
     </main>
   );

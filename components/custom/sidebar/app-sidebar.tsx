@@ -28,7 +28,7 @@ export default function AppSidebar({
       ? Data.services.map((s) => (
           <Link key={s.id} href={s.path}>
             <SidebarMenuButton
-              className=""
+              className="cursor-pointer"
               onClick={() => setHeaderActiveitem(s.lable)}
             >
               <span className="w-6 h-6 bg-accent rounded-sm"></span>

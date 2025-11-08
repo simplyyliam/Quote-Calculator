@@ -1,7 +1,12 @@
 "use client";
 
+import { SocialMediaService } from "@/app/page-views";
 import { Button } from "@/components/ui/button";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { useState } from "react";
 
 export default function Page() {
@@ -14,18 +19,15 @@ export default function Page() {
         className="flex items-center justify-center w-full h-full"
       >
         <ResizablePanel defaultSize={50} className="h-full">
-          <div className="flex items-center justify-center h-full bg-stone-100">
-            Left Penal
-          </div>
+            <SocialMediaService />
         </ResizablePanel>
         <ResizableHandle />
         {toggle > 0 && (
           <ResizablePanel
-            key={toggle}
             defaultSize={toggle === 0 ? 0 : 50}
-            className="h-full transition-all duration-300"
+            className="h-full"
           >
-            <div className="flex items-center justify-center h-full bg-stone-200">
+            <div className="flex items-center justify-center h-full">
               Right Panel
             </div>
           </ResizablePanel>
