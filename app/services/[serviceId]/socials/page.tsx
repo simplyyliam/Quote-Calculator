@@ -7,10 +7,16 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTotal } from "@/hooks";
+import { useCalculator } from "@/store/useCalculatorStore";
+
 import { useState } from "react";
 
 export default function Page() {
   const [toggle, setToggle] = useState(0);
+  const { finalValue} = useCalculator();
+  const { formatPrice } = useTotal(); // <-- useTotal hook
 
   return (
     <>
@@ -19,7 +25,7 @@ export default function Page() {
         className="flex items-center justify-center w-full h-full"
       >
         <ResizablePanel defaultSize={50} className="h-full">
-            <SocialMediaService />
+          <SocialMediaService />
         </ResizablePanel>
         <ResizableHandle />
         {toggle > 0 && (
@@ -27,9 +33,7 @@ export default function Page() {
             defaultSize={toggle === 0 ? 0 : 50}
             className="h-full"
           >
-            <div className="flex items-center justify-center h-full">
-              Right Panel
-            </div>
+            <div className="flex items-center justify-center w-full h-full">Right Panel</div>
           </ResizablePanel>
         )}
       </ResizablePanelGroup>
@@ -39,7 +43,7 @@ export default function Page() {
         variant="outline"
         className="absolute bottom-5 right-5 cursor-pointer"
       >
-        Preview
+        <span> {formatPrice(finalValue)} Preview</span>
       </Button>
     </>
   );

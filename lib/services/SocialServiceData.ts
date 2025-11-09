@@ -105,7 +105,7 @@ export const SocialServices: Meta[] = [
     // },
     {
         id: nanoid(),
-        order: 5,
+        order: 4,
         title: "Contract Length",
         Subtitle: "Select the your desired contract length.",
         options: [
