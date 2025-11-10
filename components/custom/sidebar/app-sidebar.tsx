@@ -20,12 +20,44 @@ import Link from "next/link";
 export default function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const { setActiveitem, sidebarActiveItem, setHeaderActiveitem } =
+  const { setHeaderActiveitem } =
     useActiveItemStore();
 
-  const isActive =
-    sidebarActiveItem === "Services"
-      ? Data.services.map((s) => (
+  // const isActive =
+  //   sidebarActiveItem === "Services"
+  //     ? Data.services.map((s) => (
+  // <Link key={s.id} href={s.path}>
+  //   <SidebarMenuButton
+  //     className="cursor-pointer"
+  //     onClick={() => setHeaderActiveitem(s.lable)}
+  //   >
+  //     <span className="w-6 h-6 bg-accent rounded-sm"></span>
+  //     {s.lable}
+  //   </SidebarMenuButton>
+  // </Link>
+  //       ))
+  //     : 0;
+  return (
+    <Sidebar variant="inset" {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <a href="#">
+                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                  <Command className="size-4" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">Acme Inc</span>
+                  <span className="truncate text-xs">Enterprise</span>
+                </div>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        {Data.services.map((s) => (
           <Link key={s.id} href={s.path}>
             <SidebarMenuButton
               className="cursor-pointer"
@@ -35,75 +67,9 @@ export default function AppSidebar({
               {s.lable}
             </SidebarMenuButton>
           </Link>
-        ))
-      : 0;
-
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
-  return (
-    <Sidebar
-      collapsible="icon"
-      className="overflow-hidden *:data-[sidebar=sidebar]:flex-row"
-      {...props}
-    >
-      <Sidebar
-        collapsible="none"
-        className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r"
-      >
-        <SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton size="lg" asChild className="md:h-8 md:p-0">
-                <Link href="#">
-                  <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                    <Command className="size-4" />
-                  </div>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupContent className="px-1.5 md:px-0">
-              <SidebarMenu>
-                <SidebarMenuItem className="flex flex-col gap-2">
-                  {Data.menu.map((item) => (
-                    <SidebarMenuButton
-                      onClick={() => setActiveitem(item.title)}
-                      key={item.id}
-                      className="flex items-center justify-center cursor-pointer text-muted-foreground"
-                      style={
-                        {
-                          // backgroundColor: `${item.color}`,
-                        }
-                      }
-                    >
-                      {isMobile ? (
-                        <>{item.title}</>
-                      ) : (
-                        <>{item.title.charAt(0)}</>
-                      )}
-                    </SidebarMenuButton>
-                  ))}
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarFooter>hello</SidebarFooter>
-      </Sidebar>
-
-      <Sidebar collapsible="none" className="hidden flex-1 md:flex">
-        <SidebarHeader className="gap-3.5 border-b p-3">
-          {sidebarActiveItem}
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup className="px-0">
-            <SidebarGroupContent>{isActive}</SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
+        ))}
+      </SidebarContent>
+      <SidebarFooter></SidebarFooter>
     </Sidebar>
   );
 }

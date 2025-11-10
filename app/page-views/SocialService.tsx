@@ -11,6 +11,7 @@ import { SocialServices } from "@/lib/services/SocialServiceData";
 import { useCalculator } from "@/store/useCalculatorStore";
 import { usePost } from "@/store/usePostStore";
 import { useEffect, useRef, useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const strategy = SocialServices.filter((f) => f.order === 0);
 const content = SocialServices.filter((f) => f.order === 1);
@@ -23,7 +24,7 @@ export default function SocialMediaService() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { toggleOption, selectedItems, selectedContract, setContract } =
     useCalculator();
-  const { currentValue } = usePost();
+  const { currentValue, setCurrentValue } = usePost();
 
   const { formatPrice, isLoading } = useTotal(); // <-- useTotal hook
 
@@ -39,6 +40,10 @@ export default function SocialMediaService() {
     observer.observe(container);
     return () => observer.disconnect();
   }, []);
+
+  const nums = Array.from({length: 8}, (_, i) => i + 1)
+
+  console.log(currentValue)
 
   return (
     <div
@@ -86,7 +91,7 @@ export default function SocialMediaService() {
                           price: opt.price ?? 0,
                         })
                       }
-                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted/40 ${
+                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted ${
                         isSelected ? "bg-accent" : ""
                       }`}
                     >
@@ -133,7 +138,7 @@ export default function SocialMediaService() {
                           price: opt.price ?? 0,
                         })
                       }
-                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted/40 ${
+                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted ${
                         isSelected ? "bg-accent" : ""
                       }`}
                     >
@@ -180,7 +185,7 @@ export default function SocialMediaService() {
                           price: opt.price ?? 0,
                         })
                       }
-                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted/40 ${
+                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted ${
                         isSelected ? "bg-accent" : ""
                       }`}
                     >
@@ -201,8 +206,20 @@ export default function SocialMediaService() {
               className="mb-3 w-full h-fit break-inside-avoid border shadow-none rounded-2xl bg-white gap-2.5"
             >
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-semibold">
+                <CardTitle className="flex items-center justify-between text-base font-semibold ">
                   {s.title}
+                  <Select onValueChange={(value) => setCurrentValue(value)}>
+                    <SelectTrigger className="w-fit">
+                      <SelectValue placeholder="Post amount" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {nums.map((n) => (
+                        <SelectItem  key={n} value={n}>
+                          <span>{n}</span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </CardTitle>
                 <CardDescription className="text-sm text-muted-foreground">
                   {s.Subtitle}
@@ -227,7 +244,7 @@ export default function SocialMediaService() {
                           price: opt.price ?? 0,
                         })
                       }
-                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted/40 ${
+                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted ${
                         isSelected ? "bg-accent" : ""
                       }`}
                     >
@@ -270,7 +287,7 @@ export default function SocialMediaService() {
                           discount: opt.dicounts ?? 0,
                         })
                       }
-                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted/40 ${
+                      className={`flex items-center justify-start gap-2 cursor-pointer w-full text-left hover:bg-muted ${
                         isSelected ? "bg-accent" : ""
                       }`}
                     >

@@ -7,15 +7,13 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useTotal } from "@/hooks";
-import { useCalculator } from "@/store/useCalculatorStore";
 
 import { useState } from "react";
 
 export default function Page() {
   const [toggle, setToggle] = useState(0);
-  const { finalValue} = useCalculator();
+  const { total } = useTotal()
   const { formatPrice } = useTotal(); // <-- useTotal hook
 
   return (
@@ -43,7 +41,7 @@ export default function Page() {
         variant="outline"
         className="absolute bottom-5 right-5 cursor-pointer"
       >
-        <span> {formatPrice(finalValue)} Preview</span>
+        <span> {formatPrice(total)} Preview</span>
       </Button>
     </>
   );
