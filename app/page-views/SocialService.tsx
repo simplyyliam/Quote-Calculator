@@ -208,13 +208,13 @@ export default function SocialMediaService() {
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center justify-between text-base font-semibold ">
                   {s.title}
-                  <Select onValueChange={(value) => setCurrentValue(value)}>
+                  <Select onValueChange={(value) => setCurrentValue(Number(value))}>
                     <SelectTrigger className="w-fit">
                       <SelectValue placeholder="Post amount" />
                     </SelectTrigger>
                     <SelectContent>
                       {nums.map((n) => (
-                        <SelectItem  key={n} value={n}>
+                        <SelectItem  key={n} value={String(n)}>
                           <span>{n}</span>
                         </SelectItem>
                       ))}
