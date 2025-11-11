@@ -1,6 +1,6 @@
 "use client";
 
-import { SocialMediaService } from "@/app/page-views";
+import { Invoice, SocialMediaService } from "@/app/page-views";
 import { Button } from "@/components/ui/button";
 import {
   ResizableHandle,
@@ -12,7 +12,7 @@ import { useTotal } from "@/hooks";
 import { useState } from "react";
 
 export default function Page() {
-  const [toggle, setToggle] = useState(0);
+  const [toggle, setToggle] = useState(80);
   const { total } = useTotal()
   const { formatPrice } = useTotal(); // <-- useTotal hook
 
@@ -28,16 +28,16 @@ export default function Page() {
         <ResizableHandle />
         {toggle > 0 && (
           <ResizablePanel
-            defaultSize={toggle === 0 ? 0 : 50}
+            defaultSize={toggle === 0 ? 0 : 80}
             className="h-full"
           >
-            <div className="flex items-center justify-center w-full h-full">Right Panel</div>
+            <Invoice />
           </ResizablePanel>
         )}
       </ResizablePanelGroup>
 
       <Button
-        onClick={() => setToggle(toggle === 0 ? 50 : 0)}
+        onClick={() => setToggle(toggle === 0 ? 80 : 0)}
         variant="outline"
         className="absolute bottom-5 right-5 cursor-pointer"
       >
