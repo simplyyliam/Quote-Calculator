@@ -1,6 +1,9 @@
 import { Separator } from "@/components/ui/separator";
+import { useCalculator } from "@/store/useCalculatorStore";
 
 export default function Invoice() {
+  const { selectedItems } = useCalculator();
+
   return (
     <div className="flex flex-col w-full h-full p-5 overflow-auto">
       {/* Top layer */}
@@ -34,22 +37,14 @@ export default function Invoice() {
         <Separator />
 
         <div className="flex flex-col h-fit gap-5 justify-between">
-          <div className="flex justify-between w-full">
-            <span>Strategy & Reposting</span>
-            <span>$250.00</span>
-          </div>
-          <div className="flex justify-between w-full">
-            <span>Strategy & Reposting</span>
-            <span>$250.00</span>
-          </div>
-          <div className="flex justify-between w-full">
-            <span>Strategy & Reposting</span>
-            <span>$250.00</span>
-          </div>
-          <div className="flex justify-between w-full">
-            <span>Strategy & Reposting</span>
-            <span>$250.00</span>
-          </div>
+          {selectedItems.map((s) => (
+            <div key={s.titleId} className="flex justify-between w-full">
+              <span>{s.titleId}</span>
+              {s.options.map((o) => (
+                <span key={o.optionId}>{o.price}</span>
+              ))}
+            </div>
+          ))}
         </div>
         <Separator />
       </div>
@@ -83,8 +78,8 @@ export default function Invoice() {
           <div className="flex justify-between">
             <span>Address</span>
             <div className="flex flex-col">
-              <span> 	30 Halawai Dr</span>
-              <span> 	Lahaina</span>
+              <span> 30 Halawai Dr</span>
+              <span> Lahaina</span>
               <span>Hawaii</span>
               <span>96761</span>
             </div>
